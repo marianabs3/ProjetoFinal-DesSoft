@@ -80,6 +80,39 @@ class Vanellope(pygame.sprite.Sprite):
         if self.speedy != 0:
             self.image = pygame.image.load('penelope_jump.png').convert_alpha()
 
+class Guard(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+    
+        # Armazena imagens de movimento em uma lista    
+        self.images = [pygame.image.load('rosquinha_move0.png').convert_alpha(),
+                       pygame.image.load('rosquinha_move1.png').convert_alpha(),
+                       pygame.image.load('rosquinha_move2.png').convert_alpha()]
+
+        self.current_image = 0
+        self.speedx = 2
+        self.speedy = 0
+
+        self.image = pygame.image.load('rosquinha_move0.png').convert_alpha()
+
+        self.rect = self.image.get_rect()
+        self.rect[0] = 100
+        self.rect[1] = 330
+
+    def update(self):
+        
+        self.rect.x += self.speedx
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+            self.speedx = -2
+        if self.rect.left < 0:   
+            self.rect.left = 0
+            self.speedx = 2
+        
+        # Percorre lista das imagens e cria animação
+        self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
+        self.image = self.images[ self.current_image ]
+
 
 
 # Cria a tela
@@ -95,6 +128,8 @@ background_rect = background.get_rect()
 van_group = pygame.sprite.Group()
 vanellope = Vanellope()
 van_group.add(vanellope)
+rosquinha = Guard()
+van_group.add(rosquinha)
 
 # Função de tempo de animação   
 clock = pygame.time.Clock()
