@@ -17,6 +17,8 @@ STILL = 0
 JUMPING = 1
 FALLING = 2
 
+BLACK = (0, 0, 0)
+
 # Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
     def __init__(self):
@@ -78,6 +80,8 @@ class Vanellope(pygame.sprite.Sprite):
         if self.speedy != 0:
             self.image = pygame.image.load('penelope_jump.png').convert_alpha()
 
+
+
 # Cria a tela
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Super Vanellope")
@@ -85,6 +89,7 @@ pygame.display.set_caption("Super Vanellope")
 # Carrega imagem de fundo
 background = pygame.image.load('fundo2.png')
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+background_rect = background.get_rect()
 
 # Cria grupo de sprites da personagem principal
 van_group = pygame.sprite.Group()
@@ -122,7 +127,27 @@ while game:
             if event.key == pygame.K_UP:
                 vanellope.jump()
 
-    tela.blit(background, (0,0))
+    background_rect.x -= vanellope.speedx
+        # Se o fundo saiu da janela, faz ele voltar para dentro.
+        # Verifica se o fundo saiu para a esquerda
+    if background_rect.right < 0:
+        background_rect.x += background_rect.width
+        # Verifica se o fundo saiu para a direita
+    if background_rect.left >= WIDTH:
+        background_rect.x -= background_rect.width
+    
+    # A cada loop, redesenha o fundo e os sprites
+    tela.fill(BLACK)
+
+    tela.blit(background, background_rect)
+    background_rect2 = background_rect.copy()
+    if background_rect.left > 0:
+            # Precisamos desenhar o fundo à esquerda
+        background_rect2.x -= background_rect2.width
+    else:
+            # Precisamos desenhar o fundo à direita
+        background_rect2.x += background_rect2.width
+    tela.blit(background, background_rect2)
 
     # Desenha personagem
     van_group.update()
