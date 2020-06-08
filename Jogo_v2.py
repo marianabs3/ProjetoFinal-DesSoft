@@ -2,6 +2,7 @@
 import pygame
 import os
 from pygame.locals import *
+import random
 
 pygame.init()
 
@@ -23,6 +24,14 @@ INITIAL_BLOCKS = 0
 CAKE_BLOCKS = 4
 
 BLACK = (0, 0, 0)
+# Cria a tela
+tela = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Super Vanellope")
+
+# Carrega imagem de fundo
+background = pygame.image.load('fundo2.png')
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+background_rect = background.get_rect()
 
 # Carrega imagem de blocos
 block_img = pygame.image.load('bloco.png').convert_alpha()
@@ -146,14 +155,6 @@ class Tile(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
 
-# Cria a tela
-tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Super Vanellope")
-
-# Carrega imagem de fundo
-background = pygame.image.load('fundo2.png')
-background = pygame.transform.scale(background, (WIDTH, HEIGHT))
-background_rect = background.get_rect()
 
 # Cria grupo de sprites da personagem principal
 van_group = pygame.sprite.Group()
