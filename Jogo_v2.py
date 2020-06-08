@@ -18,12 +18,19 @@ STILL = 0
 JUMPING = 1
 FALLING = 2
 
+CANDY_WIDTH = 50
+CANDY_HEIGHT = 38
+
+BLOCK_WIDTH = 1000
+BLOCK_HEIGHT = 1000
+
 TILE_SIZE = 120
 
-INITIAL_BLOCKS = 0
-CAKE_BLOCKS = 4
+INITIAL_BLOCKS = 2
+CAKE_BLOCKS = 8
 
 BLACK = (0, 0, 0)
+
 # Cria a tela
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Super Vanellope")
@@ -51,7 +58,6 @@ class Vanellope(pygame.sprite.Sprite):
 
         self.imagem_atual = 0
         self.state = STILL
-        self.speed = SPEED
         self.speedx = 0
         self.speedy = 0
 
@@ -61,7 +67,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH/2
         self.rect.bottom = int(HEIGHT * 7 / 8)
-    
+
     # Define o movimento de pular 
     def jump(self):
         if self.state == STILL:
@@ -131,6 +137,7 @@ class Guard(pygame.sprite.Sprite):
         self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
         self.image = self.images[ self.current_image ]
 
+
 class Tile(pygame.sprite.Sprite):
 
     # Construtor da classe.
@@ -154,12 +161,13 @@ class Tile(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.x += self.speedx
-
-
+        
 # Cria grupo de sprites da personagem principal
+
 van_group = pygame.sprite.Group()
 vanellope = Vanellope()
 van_group.add(vanellope)
+
 rosquinha = Guard()
 van_group.add(rosquinha)
 
@@ -167,19 +175,28 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(vanellope)
 all_sprites.add(rosquinha)
 
+# all_candies = pygame.sprite.Group()
+# for i in range(5):
+#     candy = Candy(candy_img)
+#     all_candies.add(candy)
+
+# position_x = [WIDTH, 1200, 1300]
+position_y = [210, 80]
+
 world_sprites = pygame.sprite.Group()
 for i in range(INITIAL_BLOCKS):
-    block_x = random.randint(0, WIDTH)
-    block_y = random.randint(0, int(HEIGHT * 0.5))
+    block_x = random.randint(WIDTH, int(WIDTH * 1.5))
+    block_y = random.choice(position_y)
     block = Tile(block_img, block_x, block_y)
     world_sprites.add(block)
     all_sprites.add(block)
 
+cake_sprites = pygame.sprite.Group()
 for i in range(CAKE_BLOCKS):
-    cake_x = random.randint(0, WIDTH)
-    cake_y = random.randint(0, int(HEIGHT * 0.5))
+    cake_x = random.randint(800, WIDTH)
+    cake_y = random.choice(position_y)
     cake = Tile(cake_img, cake_x, cake_y)
-    world_sprites.add(cake)
+    cake_sprites.add(cake)
     all_sprites.add(cake)
 
 # Função de tempo de animação   
@@ -189,7 +206,7 @@ clock = pygame.time.Clock()
 game = True
 
 while game:
-    clock.tick()
+    clock.tick(120)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game == False
@@ -216,7 +233,7 @@ while game:
     for block in world_sprites:
             block.speedx = -vanellope.speedx
 
-    for cake in world_sprites:
+    for cake in cake_sprites:
             cake.speedx = -vanellope.speedx
 
     all_sprites.update()
@@ -236,28 +253,28 @@ while game:
             # Destrói o bloco e cria um novo no final da tela
             block.kill()
             block_x = random.randint(WIDTH, int(WIDTH * 1.5))
-            block_y = random.randint(0, int(HEIGHT * 0.5))
+            block_y = random.choice(position_y)
             new_block = Tile(block_img, block_x, block_y)
             all_sprites.add(new_block)
             world_sprites.add(new_block)
 
     all_sprites.update()
     
-    for cake in world_sprites:
+    for cake in cake_sprites:
         if cake.rect.right < 0:
             # Destrói o bloco e cria um novo no final da tela
             cake.kill()
             cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
-            cake_y = random.randint(0, int(HEIGHT * 0.5))
+            cake_y = random.choice(position_y)
             new_cake = Tile(cake_img, cake_x, cake_y)
             all_sprites.add(new_cake)
-            world_sprites.add(new_cake)
+            cake_sprites.add(new_cake)
 
-    # A cada loop, redesenha o fundo e os sprites
-    tela.fill(BLACK)
-
+    tela.fill(BLACK) 
+    
     tela.blit(background, background_rect)
     background_rect2 = background_rect.copy()
+    
     if background_rect.left > 0:
             # Precisamos desenhar o fundo à esquerda
         background_rect2.x -= background_rect2.width
@@ -274,8 +291,11 @@ while game:
     # van_group.update()
     # van_group.draw(tela)
 
+    # all_candies.update()
+    # all_candies.draw(tela)
+
     all_sprites.update()
-    
+
     pygame.display.update()
 
 pygame.quit()
