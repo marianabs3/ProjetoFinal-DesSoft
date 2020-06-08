@@ -115,25 +115,27 @@ class Guard(pygame.sprite.Sprite):
                        pygame.image.load('rosquinha_move2.png').convert_alpha()]
 
         self.current_image = 0
-        self.speedx = 2
+        self.speedx = -2
         self.speedy = 0
 
         self.image = pygame.image.load('rosquinha_move0.png').convert_alpha()
 
         self.rect = self.image.get_rect()
-        self.rect[0] = 100
+        self.rect[0] = WIDTH
         self.rect[1] = 330
+
 
     def update(self):
     
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-            self.speedx = -2
-        if self.rect.left < 0:   
-            self.rect.left = 0
-            self.speedx = 2
+        self.rect.x += self.speedx
+        #if self.rect.right > WIDTH:
+         #   self.rect.right = WIDTH
+          #  self.speedx = -2
+        #if self.rect.left < 0:   
+         #   self.rect.left = 0
+          #  self.speedx = 2
         
-        # Percorre lista das imagens e cria animação
+        #Percorre lista das imagens e cria animação
         self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
         self.image = self.images[ self.current_image ]
 
@@ -168,11 +170,11 @@ van_group = pygame.sprite.Group()
 vanellope = Vanellope()
 van_group.add(vanellope)
 
-rosquinha = Guard()
-van_group.add(rosquinha)
-
 all_sprites = pygame.sprite.Group()
 all_sprites.add(vanellope)
+
+rosquinha = Guard()
+van_group.add(rosquinha)
 all_sprites.add(rosquinha)
 
 # all_candies = pygame.sprite.Group()
@@ -231,11 +233,11 @@ while game:
                 vanellope.jump()
 
     for block in world_sprites:
-            block.speedx = -vanellope.speedx
+        block.speedx = -vanellope.speedx
 
     for cake in cake_sprites:
-            cake.speedx = -vanellope.speedx
-
+        cake.speedx = -vanellope.speedx
+        
     all_sprites.update()
 
     background_rect.x -= vanellope.speedx
@@ -269,6 +271,16 @@ while game:
             new_cake = Tile(cake_img, cake_x, cake_y)
             all_sprites.add(new_cake)
             cake_sprites.add(new_cake)
+
+    for rosquinha in van_group:
+        if rosquinha.rect.right < 0:
+            # Destrói o bloco e cria um novo no final da tela
+            rosquinha.kill()
+            rosquinha_x = random.randint(WIDTH, int(WIDTH * 1.5))
+            rosquinha_y = 330
+            new_rosquinha = Guard()
+            all_sprites.add(new_rosquinha)
+            van_group.add(new_rosquinha)
 
     tela.fill(BLACK) 
     
