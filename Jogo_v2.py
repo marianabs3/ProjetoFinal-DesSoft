@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+#Importando as bibliotecas necessárias:
 import pygame
 import os
 from pygame.locals import *
@@ -6,7 +8,7 @@ import random
 
 pygame.init()
 
-TILE_SIZE = 120
+TILE_SIZE = 60
 
 BLOCK_WIDTH = 1000
 BLOCK_HEIGHT = 1000
@@ -14,7 +16,7 @@ BLOCK_HEIGHT = 1000
 # Tamanho da tela
 WIDTH = 1100
 HEIGHT = 500
-JUMP_SIZE = TILE_SIZE/3
+JUMP_SIZE = 30 #TILE_SIZE/3
 SPEED = 10
 GRAVITY = 2
 GROUND = HEIGHT * 5 // 6
@@ -26,6 +28,12 @@ FALLING = 2
 #CANDY_WIDTH = 50
 #CANDY_HEIGHT = 38
 
+VANELLOPE_WIDTH = 100
+VANELLOPE_HEIGHT = 100
+
+GUARDA_WIDTH = 180
+GUARDA_HEIGHT = 180
+
 INITIAL_BLOCKS = 2
 CAKE_BLOCKS = 8
 
@@ -33,18 +41,37 @@ BLACK = (0, 0, 0)
 
 # Cria a tela
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Super Vanellope")
+pygame.display.set_caption("Fuga Doce")
 
 # Carrega imagem de fundo
-background = pygame.image.load('fundo2.png')
+background = pygame.image.load('imagens/fundo2.png')
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 background_rect = background.get_rect()
 
 # Carrega imagem de blocos
-block_img = pygame.image.load('bloco.png').convert_alpha()
+block_img = pygame.image.load('imagens/bloco.png').convert_alpha()
 
 # Carrega imagem blocos 2
-cake_img = pygame.image.load('bloco_cake.png').convert_alpha()
+cake_img = pygame.image.load('imagens/bloco_cake.png').convert_alpha()
+
+imagem0 = pygame.image.load('imagens/penelope_frente.png').convert_alpha()
+imagem0 = pygame.transform.scale(imagem0, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
+imagem1 = pygame.image.load('imagens/penelope_move0.png').convert_alpha()
+imagem1 = pygame.transform.scale(imagem1, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
+imagem2 = pygame.image.load('imagens/penelope_move1.png').convert_alpha()
+imagem2 = pygame.transform.scale(imagem2, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
+imagem3 = pygame.image.load('imagens/penelope_move2.png').convert_alpha()
+imagem3 = pygame.transform.scale(imagem3, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
+rosquinha0 = pygame.image.load('imagens/rosquinha_move0.png').convert_alpha()
+rosquinha0 = pygame.transform.scale(rosquinha0, (GUARDA_WIDTH, GUARDA_HEIGHT))
+rosquinha1 = pygame.image.load('imagens/rosquinha_move1.png').convert_alpha()
+rosquinha1 = pygame.transform.scale(rosquinha1, (GUARDA_WIDTH, GUARDA_HEIGHT))
+rosquinha2 = pygame.image.load('imagens/rosquinha_move2.png').convert_alpha()
+rosquinha2 = pygame.transform.scale(rosquinha2, (GUARDA_WIDTH, GUARDA_HEIGHT))
 
 class Tile(pygame.sprite.Sprite):
 
@@ -76,16 +103,16 @@ class Vanellope(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         
         # Armazena imagens de movimento em uma lista
-        self.images = [pygame.image.load('penelope_move0.png').convert_alpha(),
-                       pygame.image.load('penelope_move1.png').convert_alpha(),
-                       pygame.image.load('penelope_move2.png').convert_alpha()]
+        self.images = [imagem1,
+                       imagem2,
+                       imagem3]
 
         self.imagem_atual = 0
         self.state = STILL
         self.speedx = 0
         self.speedy = 0
 
-        self.image = pygame.image.load('penelope_frente.png').convert_alpha()
+        self.image = imagem0
         
         # Redimensiona imagem
         self.rect = self.image.get_rect()
@@ -126,11 +153,11 @@ class Vanellope(pygame.sprite.Sprite):
 
         # Atualiza a imagem quando personagem está parado
         if self.speedx == 0:
-            self.image =  pygame.image.load('penelope_frente.png').convert_alpha()
+            self.image =  imagem0
 
         # Atualiza imagem quando personagem está pulando
         if self.speedy != 0:
-            self.image = pygame.image.load('penelope_jump.png').convert_alpha()
+            self.image = pygame.image.load('imagens/penelope_jump.png').convert_alpha()
 
        
 class Guard(pygame.sprite.Sprite):
@@ -138,19 +165,19 @@ class Guard(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
     
         # Armazena imagens de movimento em uma lista    
-        self.images = [pygame.image.load('rosquinha_move0.png').convert_alpha(),
-                       pygame.image.load('rosquinha_move1.png').convert_alpha(),
-                       pygame.image.load('rosquinha_move2.png').convert_alpha()]
+        self.images = [rosquinha0,
+                       rosquinha1,
+                       rosquinha2]
 
         self.current_image = 0
         self.speedx = -2
         self.speedy = 0
 
-        self.image = pygame.image.load('rosquinha_move0.png').convert_alpha()
+        self.image = rosquinha0
 
         self.rect = self.image.get_rect()
         self.rect[0] = WIDTH
-        self.rect[1] = 330
+        self.rect[1] = 270
 
 
     def update(self):
@@ -199,24 +226,23 @@ def game_screen(tela):
     clock = pygame.time.Clock()
 
     # Cria grupo de sprites da personagem principal
-    blocks = pygame.sprite.Group()
+    blocks = pygame.sprite.Group() #blocos
 
     #assets = load_assets(img_dir)
-
     van_group = pygame.sprite.Group()
+    all_sprites = pygame.sprite.Group() #vanellope
+    all_guardas = pygame.sprite.Group()
     vanellope = Vanellope(blocks)
+    all_sprites.add(vanellope)
     van_group.add(vanellope)
 
-    all_sprites = pygame.sprite.Group()
-    all_sprites.add(vanellope)
-
     rosquinha = Guard()
-    van_group.add(rosquinha)
     all_sprites.add(rosquinha)
+    all_guardas.add(rosquinha)
 
     position_y = [210, 80]
 
-    world_sprites = pygame.sprite.Group()
+    world_sprites = pygame.sprite.Group() #bloco também
     for i in range(INITIAL_BLOCKS):
         block_x = random.randint(WIDTH, int(WIDTH * 1.5))
         block_y = random.choice(position_y)
@@ -303,7 +329,7 @@ def game_screen(tela):
                 cake_sprites.add(new_cake)
                 blocks.add(new_cake)
 
-        for rosquinha in van_group:
+        for rosquinha in all_sprites:
             if rosquinha.rect.right < 0:
                 # Destrói o bloco e cria um novo no final da tela
                 rosquinha.kill()
@@ -311,7 +337,7 @@ def game_screen(tela):
                 rosquinha_y = 330
                 new_rosquinha = Guard()
                 all_sprites.add(new_rosquinha)
-                van_group.add(new_rosquinha)
+                all_guardas.add(new_rosquinha)
 
         tela.fill(BLACK) 
         
@@ -338,6 +364,14 @@ def game_screen(tela):
         # all_candies.draw(tela)
 
         all_sprites.update()
+
+        #colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False)
+        #if colisao:
+            #vanellope.image = imagem1
+            #vanellope.kill()
+
+            #pygame.quit()
+            
 
         pygame.display.update()
 
