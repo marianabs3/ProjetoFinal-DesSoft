@@ -34,7 +34,7 @@ VANELLOPE_HEIGHT = 100
 GUARDA_WIDTH = 180
 GUARDA_HEIGHT = 180
 
-INITIAL_BLOCKS = 2
+INITIAL_BLOCKS = 1
 CAKE_BLOCKS = 8
 
 BLACK = (0, 0, 0)
@@ -88,6 +88,9 @@ class Tile(pygame.sprite.Sprite):
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
 
+        self.mask = pygame.mask.from_surface(self.image)
+
+
         # Posiciona o tile
         self.rect.x = x
         self.rect.y = y
@@ -99,7 +102,7 @@ class Tile(pygame.sprite.Sprite):
 
 # Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
-    def __init__(self, blocks):
+    def __init__(self, cake_sprites):
         pygame.sprite.Sprite.__init__(self)
         
         # Armazena imagens de movimento em uma lista
@@ -119,7 +122,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH/2
         self.rect.bottom = int(HEIGHT * 7 / 8)
 
-        self.blocks = blocks
+        self.cake_sprites = cake_sprites
         self.mask = pygame.mask.from_surface(self.image)
 
     # Define o movimento de pular 
@@ -135,7 +138,39 @@ class Vanellope(pygame.sprite.Sprite):
         
         if self.speedy > 0:
             self.state = FALLING
+        
         self.rect.y += self.speedy
+
+        # Se colidiu com algum bloco, volta para o ponto antes da colisão
+        collisions = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
+        # Corrige a posição do personagem para antes da colisão
+        for collision in collisions:
+            # Estava indo para baixo
+            if self.speedy > 0:
+                if self.rect.x + self.rect.width > collision.rect.x + 30:
+                    self.rect.bottom = collision.rect.top
+                    # Se colidiu com algo, para de cair
+                    self.speedy = 0
+                    # Atualiza o estado para parado
+                    self.state = STILL
+            # Estava indo para cima
+            elif self.speedy < 0:
+                self.rect.top = collision.rect.bottom
+                # Se colidiu com algo, para de cair
+                self.speedy = 0
+                # Atualiza o estado para parado
+                self.state = STILL
+
+        collisions = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
+       
+        # Corrige a posição do personagem para antes da colisão
+        for collision in collisions:
+            # Estava indo para a direita
+            if self.speedx > 0:
+                self.rect.right = collision.rect.left
+            # Estava indo para a esquerda
+            elif self.speedx < 0:
+                self.rect.left = collision.rect.right
 
         if self.rect.bottom > GROUND:
             self.rect.bottom = GROUND
@@ -147,7 +182,6 @@ class Vanellope(pygame.sprite.Sprite):
         if self.rect.left < 0:   
             self.rect.left = 0
                          
-       
         # Percorre lista das imagens e cria animação
         self.imagem_atual = (self.imagem_atual + 1) % 2  # Volta para imagem 0 da lista
         self.image = self.images[ self.imagem_atual ]
