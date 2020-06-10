@@ -120,6 +120,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.bottom = int(HEIGHT * 7 / 8)
 
         self.blocks = blocks
+        self.mask = pygame.mask.from_surface(self.image)
 
     # Define o movimento de pular 
     def jump(self):
@@ -178,6 +179,7 @@ class Guard(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect[0] = WIDTH
         self.rect[1] = 270
+        self.mask = pygame.mask.from_surface(self.image)
 
 
     def update(self):
@@ -365,12 +367,13 @@ def game_screen(tela):
 
         all_sprites.update()
 
-        #colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False)
-        #if colisao:
-            #vanellope.image = imagem1
-            #vanellope.kill()
 
-            #pygame.quit()
+        colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
+        if colisao:
+            #vanellope.image = imagem1
+            vanellope.kill()
+
+            pygame.quit()
             
 
         pygame.display.update()
