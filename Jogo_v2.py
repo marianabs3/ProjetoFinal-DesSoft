@@ -108,7 +108,7 @@ class Tile(pygame.sprite.Sprite):
 
 # Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
-    def __init__(self, cake_sprites):
+    def __init__(self, all_sprites):
         pygame.sprite.Sprite.__init__(self)
         
         # Armazena imagens de movimento em uma lista
@@ -128,7 +128,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH/2
         self.rect.bottom = int(HEIGHT * 7 / 8)
 
-        self.cake_sprites = cake_sprites
+        self.all_sprites = all_sprites
         self.mask = pygame.mask.from_surface(self.image)
 
     # Define o movimento de pular 
@@ -148,7 +148,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.y += self.speedy
 
         # Se colidiu com algum bloco, volta para o ponto antes da colisão
-        collisions = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
+        collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
         # Corrige a posição do personagem para antes da colisão
         for collision in collisions:
             # Estava indo para baixo
@@ -167,7 +167,7 @@ class Vanellope(pygame.sprite.Sprite):
                 # Atualiza o estado para parado
                 self.state = STILL
 
-        collisions = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
+        collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
        
         # Corrige a posição do personagem para antes da colisão
         for collision in collisions:
@@ -271,12 +271,15 @@ def game_screen(tela):
     blocks = pygame.sprite.Group() #blocos
 
     #assets = load_assets(img_dir)
-    van_group = pygame.sprite.Group()
+    #van_group = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group() #vanellope
     all_guardas = pygame.sprite.Group()
     vanellope = Vanellope(blocks)
     all_sprites.add(vanellope)
-    van_group.add(vanellope)
+    #van_group.add(vanellope)
+
+    block_sprites = pygame.sprite.Group() #bloco também
+    cake_sprites = pygame.sprite.Group()
 
     rosquinha = Guard()
     all_sprites.add(rosquinha)
@@ -285,16 +288,14 @@ def game_screen(tela):
     position_y = [80]
     position2_y = [210]
 
-    world_sprites = pygame.sprite.Group() #bloco também
     for i in range(INITIAL_BLOCKS):
         block_x = random.randint(WIDTH, int(WIDTH * 1.5))
         block_y = random.choice(position_y)
         block = Tile(block_img, block_x, block_y)
-        world_sprites.add(block)
+        block_sprites.add(block)
         all_sprites.add(block)
         blocks.add(block)
-
-    cake_sprites = pygame.sprite.Group()
+        
     for i in range(CAKE_BLOCKS):
         cake_x = random.randint(800, WIDTH)
         cake_y = random.choice(position2_y)
@@ -330,7 +331,7 @@ def game_screen(tela):
                 if event.key == pygame.K_UP:
                     vanellope.jump()
 
-        for block in world_sprites:
+        for block in block_sprites:
             block.speedx = -vanellope.speedx
 
         for cake in cake_sprites:
@@ -348,7 +349,7 @@ def game_screen(tela):
             background_rect.x -= background_rect.width
 
         # Verifica se algum bloco saiu da janela
-        for block in world_sprites:
+        for block in block_sprites:
             if block.rect.right < 0:
                 # Destrói o bloco e cria um novo no final da tela
                 block.kill()
@@ -356,7 +357,7 @@ def game_screen(tela):
                 block_y = random.choice(position_y)
                 new_block = Tile(block_img, block_x, block_y)
                 all_sprites.add(new_block)
-                world_sprites.add(new_block)
+                block_sprites.add(new_block)
                 blocks.add(new_block)
 
         
@@ -408,7 +409,13 @@ def game_screen(tela):
         # all_candies.update()
         # all_candies.draw(tela)
 
-        all_sprites.update()
+        all_sprites.update()      
+
+        block_sprites  
+        colisao = pygame.sprite.spritecollide(vanellope, block_sprites, False)
+        if colisao:
+            block.image = brigadeiro
+
 
         #colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
         #if colisao:
