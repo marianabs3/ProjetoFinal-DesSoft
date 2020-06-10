@@ -12,6 +12,11 @@ def main():
     HEIGHT = 500
     surf = pygame.display.set_mode((WIDHT, HEIGHT)) #crio superficie para jogo
     pygame.display.set_caption("Jogo")
+    tela1(surf)
+
+def tela1(surf):
+    WIDHT = 700
+    HEIGHT = 500
     IMAGEM_WIDHT = 100
     IMAGEM_HEIGHT = 100
     COKE_WIDHT = 50
