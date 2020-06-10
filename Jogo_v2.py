@@ -34,6 +34,9 @@ VANELLOPE_HEIGHT = 100
 GUARDA_WIDTH = 180
 GUARDA_HEIGHT = 180
 
+BRIGADEIRO_WIDTH = 100
+BRIGADEIRO_HEIGHT = 100
+
 INITIAL_BLOCKS = 1
 CAKE_BLOCKS = 8
 
@@ -65,6 +68,9 @@ imagem2 = pygame.transform.scale(imagem2, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
 
 imagem3 = pygame.image.load('imagens/penelope_move2.png').convert_alpha()
 imagem3 = pygame.transform.scale(imagem3, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
+brigadeiro = pygame.image.load('imagens/brigadeiro0.png').convert_alpha()
+brigadeiro = pygame.transform.scale(brigadeiro, (BRIGADEIRO_WIDTH, BRIGADEIRO_HEIGHT))
 
 rosquinha0 = pygame.image.load('imagens/rosquinha_move0.png').convert_alpha()
 rosquinha0 = pygame.transform.scale(rosquinha0, (GUARDA_WIDTH, GUARDA_HEIGHT))
@@ -276,7 +282,8 @@ def game_screen(tela):
     all_sprites.add(rosquinha)
     all_guardas.add(rosquinha)
 
-    position_y = [210, 80]
+    position_y = [80]
+    position2_y = [210]
 
     world_sprites = pygame.sprite.Group() #bloco também
     for i in range(INITIAL_BLOCKS):
@@ -290,7 +297,7 @@ def game_screen(tela):
     cake_sprites = pygame.sprite.Group()
     for i in range(CAKE_BLOCKS):
         cake_x = random.randint(800, WIDTH)
-        cake_y = random.choice(position_y)
+        cake_y = random.choice(position2_y)
         cake = Tile(cake_img, cake_x, cake_y)
         cake_sprites.add(cake)
         all_sprites.add(cake)
@@ -352,14 +359,13 @@ def game_screen(tela):
                 world_sprites.add(new_block)
                 blocks.add(new_block)
 
-        all_sprites.update()
         
         for cake in cake_sprites:
             if cake.rect.right < 0:
                 # Destrói o bloco e cria um novo no final da tela
                 cake.kill()
                 cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
-                cake_y = random.choice(position_y)
+                cake_y = random.choice(position2_y)
                 new_cake = Tile(cake_img, cake_x, cake_y)
                 all_sprites.add(new_cake)
                 cake_sprites.add(new_cake)
@@ -374,6 +380,9 @@ def game_screen(tela):
                 new_rosquinha = Guard()
                 all_sprites.add(new_rosquinha)
                 all_guardas.add(new_rosquinha)
+
+        all_sprites.update()
+
 
         tela.fill(BLACK) 
         
@@ -401,13 +410,12 @@ def game_screen(tela):
 
         all_sprites.update()
 
-
-        colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
-        if colisao:
+        #colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
+        #if colisao:
             #vanellope.image = imagem1
-            vanellope.kill()
+            #vanellope.kill()
 
-            pygame.quit()
+            #pygame.quit()
             
 
         pygame.display.update()
