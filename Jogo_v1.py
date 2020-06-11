@@ -54,18 +54,22 @@ def tela1(surf):
 
             self.image = img
             self.rect = self.image.get_rect()
+            #self.rect.centerx = WIDTH/2
             self.rect.centery = VANELLOPE_HEIGHT/2
             self.rect.right = VANELLOPE_WIDTH
-            self.rect.bottom = VANELLOPE_HEIGHT 
-            self.rect.x = 0
+            #self.rect.bottom = int(HEIGHT* 7/8) 
+            self.rect.x = WIDTH/2
             self.rect.y = 340
-            self.speedx = 0.3
+            self.speedx = 0
             self.all_sprites = all_sprites
             self.all_arcoiris = all_arcoiris
             self.tiro_imagem = tiro_imagem
 
         def update(self):
-            self.rect.x +=(delta_movimento["direita"] - delta_movimento["esquerda"])*self.speedx*delta_time
+            self.rect.x += self.speedx
+            #collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
+            #self.rect.x -= self.speedx
+            #self.rect.x +=(delta_movimento["direita"] - delta_movimento["esquerda"])*self.speedx*delta_time
 
         def shoot(self):
             new_tiro = Arcoiris(self.tiro_imagem, self.rect.right, self.rect.centery)
@@ -147,91 +151,116 @@ def tela1(surf):
             if self.rect.right > WIDTH:
                 self.kill()
     
-    game = True
-    rect = imagem.get_rect()    
-    delta_movimento = {"esquerda":0, "direita":0}
-    velocidade = 0.3
-    clock = pygame.time.Clock() #objeto para controle de atualização de imagem
-    all_sprites = pygame.sprite.Group()
-    all_cokes = pygame.sprite.Group()
-    all_guardas = pygame.sprite.Group()
-    all_arcoiris = pygame.sprite.Group()
+    def game_screen(surf):
+        game = True
+        rect = imagem.get_rect()    
+        delta_movimento = {"esquerda":0, "direita":0}
+        velocidade = 4
+        clock = pygame.time.Clock() #objeto para controle de atualização de imagem
+        all_sprites = pygame.sprite.Group()
+        all_cokes = pygame.sprite.Group()
+        all_guardas = pygame.sprite.Group()
+        all_arcoiris = pygame.sprite.Group()
 
-    jogador = Carro(imagem, all_sprites, all_arcoiris, tiro_imagem)
-    all_sprites.add(jogador)
-    rosquinha = Guard(rosquinha0)
-    all_sprites.add(rosquinha)
-    all_guardas.add(rosquinha)
+        jogador = Carro(imagem, all_sprites, all_arcoiris, tiro_imagem)
+        all_sprites.add(jogador)
+        rosquinha = Guard(rosquinha0)
+        all_sprites.add(rosquinha)
+        all_guardas.add(rosquinha)
 
-    #for j in range(1):
-        #guarda1 = Guard(rosquinha0)
-        #all_sprites.add(guarda1)
-        #all_guardas.add(guarda1)
-    
-    for i in range(1):
-        coke1 = Coke(coke)
-        all_sprites.add(coke1)
-        all_cokes.add(coke1)
-
-    while game:
-        delta_time = clock.tick(60) #garantes um FPS máximo de 60 Hz
-        eventos = pygame.event.get()
-        for evento in eventos:
-            if evento.type == pygame.QUIT or (evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE):
-                pygame.quit() #terminado a aplicação do pygame
-                sys.exit() #sair pela rotina do sistema 
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_LEFT:
-                    delta_movimento["esquerda"] = 1
-                if evento.key == pygame.K_RIGHT:
-                    delta_movimento["direita"] = 1
-                if evento.key == pygame.K_SPACE:
-                    jogador.shoot()
-            if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_LEFT:
-                    delta_movimento["esquerda"] = 0
-                if evento.key == pygame.K_RIGHT:
-                    delta_movimento ["direita"]= 0
-                    
-
-        for rosquinha in all_guardas:
-            if rosquinha.rect.right < 0:
-                # Destrói o bloco e cria um novo no final da tela
-                rosquinha.kill()
-                rosquinha_x = random.randint(WIDTH, int(WIDTH * 1.5))
-                rosquinha_y = 330
-                new_rosquinha = Guard(rosquinha0)
-                all_sprites.add(new_rosquinha)
-                all_guardas.add(new_rosquinha)
-
+        #for j in range(1):
+            #guarda1 = Guard(rosquinha0)
+            #all_sprites.add(guarda1)
+            #all_guardas.add(guarda1)
         
-        all_sprites.update()
+        for i in range(1):
+            coke1 = Coke(coke)
+            all_sprites.add(coke1)
+            all_cokes.add(coke1)
 
-        colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
-        if colisao:
-            r = Guard(rosquinha0)
-            all_sprites.add(r)
-            all_guardas.add(r)
+        while game:
+            delta_time = clock.tick(60) #garantes um FPS máximo de 60 Hz
+            eventos = pygame.event.get()
+            for evento in eventos:
+                if evento.type == pygame.QUIT or (evento.type == pygame.KEYDOWN and evento.key == pygame.K_ESCAPE):
+                    pygame.quit() #terminado a aplicação do pygame
+                    sys.exit() #sair pela rotina do sistema 
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_LEFT:
+                        jogador.speedx -= 4
+                    if evento.key == pygame.K_RIGHT:
+                        jogador.speedx += 4
+                    if evento.key == pygame.K_SPACE:
+                        jogador.shoot()
+                if evento.type == pygame.KEYUP:
+                    if evento.key == pygame.K_LEFT:
+                        jogador.speedx += 4
+                    if evento.key == pygame.K_RIGHT:
+                        jogador.speedx -= 4
+                        
 
-        colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
-        if colisao:
-            jogador.image = imagem2
+            for rosquinha in all_guardas:
+                if rosquinha.rect.right < 0:
+                    # Destrói o bloco e cria um novo no final da tela
+                    rosquinha.kill()
+                    rosquinha_x = random.randint(WIDTH, int(WIDTH * 1.5))
+                    rosquinha_y = 330
+                    new_rosquinha = Guard(rosquinha0)
+                    all_sprites.add(new_rosquinha)
+                    all_guardas.add(new_rosquinha)
+
             
+            all_sprites.update()
 
-        colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
-        if colisao:
-            jogador.speedx += 0.05
-        
-        for coke1 in colisao:
-            c = Coke(coke)
-            all_sprites.add(c)
-            all_cokes.add(c)
-        surf.fill([255, 255, 255])
-        surf.blit(background, (0, 0))
-        surf.blit(text, (10, 10))
-        all_sprites.draw(surf)
+            background_rect.x -= jogador.speedx
+            if background_rect.right < 0:
+                background_rect.x += background_rect.width
+            if background_rect.left >= WIDTH:
+                background_rect.x -= background_rect.width
 
-        pygame.display.flip() #faz atualização da tela
+            surf.fill([255, 255, 255])
 
+            surf.blit(background, background_rect)
+            background_rect2 = background_rect.copy()
+            if background_rect.left > 0:
+                background_rect2.x -= background_rect2.width
+            else:
+                background_rect2.x += background_rect2.width
+            surf.blit(background, background_rect2)
+
+            all_sprites.draw(surf)
+
+            pygame.display.flip()
+
+
+            colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
+            if colisao:
+                r = Guard(rosquinha0)
+                all_sprites.add(r)
+                all_guardas.add(r)
+
+            colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
+            if colisao:
+                jogador.image = imagem2
+                
+
+            colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
+            if colisao:
+                jogador.speedx += 0.05
+            
+            for coke1 in colisao:
+                c = Coke(coke)
+                all_sprites.add(c)
+                all_cokes.add(c)
+            
+    surf = pygame.display.set_mode((WIDTH, HEIGHT))
+
+
+    pygame.display.flip() #faz atualização da tela
+
+    try:
+        game_screen(surf)
+    finally:
+        pygame.quit()
 if __name__ == "__main__":
     main()
