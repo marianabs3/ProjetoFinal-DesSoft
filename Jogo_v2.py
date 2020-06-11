@@ -317,6 +317,8 @@ def game_screen(tela):
     # Loop principal do jogo
     distance = 0
     create_distance = 100
+    distance2 = 0
+    create_distance2 = 100
     game = True
     while game:
         clock.tick(120)
@@ -352,6 +354,8 @@ def game_screen(tela):
             cake.speedx = -vanellope.real_speedx
         
         distance += vanellope.real_speedx
+        distance2 += vanellope.real_speedx
+
         background_rect.x -= vanellope.real_speedx
             # Se o fundo saiu da janela, faz ele voltar para dentro.
             # Verifica se o fundo saiu para a esquerda
@@ -365,14 +369,17 @@ def game_screen(tela):
         # for block in block_sprites:
         #     if block.rect.right < 0:
         if distance > create_distance:
-            create_distance = distance + 100
+            create_distance = distance + 1000
             # Destrói o bloco e cria um novo no final da tela
             block_x = random.randint(WIDTH, int(WIDTH * 1.5))
             block_y = random.choice(position_y)
             new_block = Tile(block_img, block_x, block_y)
             all_sprites.add(new_block)
             block_sprites.add(new_block)
-            blocks.add(new_block)
+            blocks.add(new_block)        
+  
+        if distance2 > create_distance2:
+            create_distance2 = distance2 + 100
             cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
             cake_y = random.choice(position2_y)
             new_cake = Tile(cake_img, cake_x, cake_y)
