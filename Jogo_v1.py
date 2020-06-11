@@ -8,34 +8,43 @@ def main():
 
     pygame.init() #incia rotinas do pygame
 
-    WIDHT = 700
+    WIDTH = 1100
     HEIGHT = 500
-    surf = pygame.display.set_mode((WIDHT, HEIGHT)) #crio superficie para jogo
-    pygame.display.set_caption("Jogo")
+    surf = pygame.display.set_mode((WIDTH, HEIGHT)) #crio superficie para jogo
+    pygame.display.set_caption("Fuga Doce - Eduardo, Ivan, Mariana")
     tela1(surf)
 
 def tela1(surf):
-    WIDHT = 700
+    WIDTH = 1100
     HEIGHT = 500
-    IMAGEM_WIDHT = 100
-    IMAGEM_HEIGHT = 100
-    COKE_WIDHT = 50
+    VANELLOPE_WIDTH = 100
+    VANELLOPE_HEIGHT = 100
+    COKE_WIDTH = 50
     COKE_HEIGHT = 50
     GUARDA_WIDTH = 200
     GUARDA_HEIGHT = 200
-    background = pygame.image.load('imagens/cenario3.jpg').convert_alpha()
-    background = pygame.transform.scale(background, (WIDHT, HEIGHT))
+    background = pygame.image.load('imagens/fundo2.png').convert_alpha()
+    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+    background_rect = background.get_rect()
+
     font = pygame.font.SysFont(None, 20)
     text = font.render('COMBUSTÍVEL', True, (0, 0, 0))
+
     imagem = pygame.image.load('imagens/vanellope_up.png').convert_alpha()
-    imagem = pygame.transform.scale(imagem, (IMAGEM_WIDHT, IMAGEM_HEIGHT))
+    imagem = pygame.transform.scale(imagem, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
+
     coke = pygame.image.load('imagens/New Piskel (3).png').convert_alpha()
-    coke = pygame.transform.scale(coke, (COKE_WIDHT, COKE_HEIGHT))  
+    coke = pygame.transform.scale(coke, (COKE_WIDTH, COKE_HEIGHT))  
+
     imagem2 = pygame.image.load('imagens/penelope_frente.png').convert_alpha()
-    imagem2 = pygame.transform.scale(imagem2, (IMAGEM_WIDHT, IMAGEM_HEIGHT)) 
+    imagem2 = pygame.transform.scale(imagem2, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT)) 
 
     rosquinha0 = pygame.image.load('imagens/rosquinha_move0.png').convert_alpha()
     rosquinha0 = pygame.transform.scale(rosquinha0, (GUARDA_WIDTH, GUARDA_HEIGHT))
+    rosquinha1 = pygame.image.load('imagens/rosquinha_move1.png').convert_alpha()
+    rosquinha1 = pygame.transform.scale(rosquinha1, (GUARDA_WIDTH, GUARDA_HEIGHT))
+    rosquinha2 = pygame.image.load('imagens/rosquinha_move2.png').convert_alpha()
+    rosquinha2 = pygame.transform.scale(rosquinha2, (GUARDA_WIDTH, GUARDA_HEIGHT))
 
     tiro_imagem = pygame.image.load('imagens/tiro.png').convert_alpha()
 
@@ -45,9 +54,9 @@ def tela1(surf):
 
             self.image = img
             self.rect = self.image.get_rect()
-            self.rect.centery = IMAGEM_HEIGHT/2
-            self.rect.right = IMAGEM_WIDHT
-            self.rect.bottom = IMAGEM_HEIGHT 
+            self.rect.centery = VANELLOPE_HEIGHT/2
+            self.rect.right = VANELLOPE_WIDTH
+            self.rect.bottom = VANELLOPE_HEIGHT 
             self.rect.x = 0
             self.rect.y = 340
             self.speedx = 0.3
@@ -69,7 +78,7 @@ def tela1(surf):
 
             self.image = img
             self.rect = self.image.get_rect()
-            self.rect.x = random.randint(0, WIDHT - COKE_WIDHT)
+            self.rect.x = random.randint(0, WIDTH - COKE_WIDTH)
             self.rect.y = random.randint(-50, -COKE_HEIGHT)
             self.speedx = 3
             self.speedy = 4
@@ -77,8 +86,8 @@ def tela1(surf):
         def update(self):
             self.rect.x += self.speedx
             self.rect.y += self.speedy
-            if self.rect.top > HEIGHT or self.rect.right + COKE_WIDHT < 0 or self.rect.left > WIDHT:
-                self.rect.x = random.randint(0, WIDHT - COKE_WIDHT)
+            if self.rect.top > HEIGHT or self.rect.right + COKE_WIDTH < 0 or self.rect.left > WIDTH:
+                self.rect.x = random.randint(0, WIDTH - COKE_WIDTH)
                 self.rect.y = random.randint(-50, -COKE_HEIGHT)
 
     class Guard(pygame.sprite.Sprite):
@@ -86,12 +95,39 @@ def tela1(surf):
             pygame.sprite.Sprite.__init__(self)
     
         # Armazena imagens de movimento em uma lista    
-            self.image = img
-            self.speedx = 0
+            self.images = [rosquinha0,
+                           rosquinha1,
+                           rosquinha2]
+            self.current_image = 0
+            self.speedx = -2
             self.speedy = 0
+
+            self.image = rosquinha0
+
             self.rect = self.image.get_rect()
-            self.rect.x = random.randint(350, WIDHT)
-            self.rect.y = 270
+            self.rect[0] = WIDTH
+            self.rect[1] = 270
+            self.mask = pygame.mask.from_surface(self.image)
+
+
+        def update(self):
+    
+            self.rect.x += self.speedx
+            #if self.rect.right > WIDTH:
+            #   self.rect.right = WIDTH
+            #  self.speedx = -2
+            #if self.rect.left < 0:   
+            #   self.rect.left = 0
+            #  self.speedx = 2
+        
+            #Percorre lista das imagens e cria animação
+            self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
+            self.image = self.images[ self.current_image ]
+            ##self.speedx = 0
+            ##self.speedy = 0
+            ##self.rect = self.image.get_rect()
+            ##self.rect.x = random.randint(350, WIDTH)
+            ##self.rect.y = 270
 
 
     class Arcoiris(pygame.sprite.Sprite):
@@ -108,7 +144,7 @@ def tela1(surf):
         def update (self):
             self.rect.x += self.speedx
 
-            if self.rect.right > WIDHT:
+            if self.rect.right > WIDTH:
                 self.kill()
     
     game = True
@@ -123,13 +159,16 @@ def tela1(surf):
 
     jogador = Carro(imagem, all_sprites, all_arcoiris, tiro_imagem)
     all_sprites.add(jogador)
+    rosquinha = Guard(rosquinha0)
+    all_sprites.add(rosquinha)
+    all_guardas.add(rosquinha)
 
-    for j in range(1):
-        guarda1 = Guard(rosquinha0)
-        all_sprites.add(guarda1)
-        all_guardas.add(guarda1)
+    #for j in range(1):
+        #guarda1 = Guard(rosquinha0)
+        #all_sprites.add(guarda1)
+        #all_guardas.add(guarda1)
     
-    for i in range(3):
+    for i in range(1):
         coke1 = Coke(coke)
         all_sprites.add(coke1)
         all_cokes.add(coke1)
@@ -153,10 +192,26 @@ def tela1(surf):
                     delta_movimento["esquerda"] = 0
                 if evento.key == pygame.K_RIGHT:
                     delta_movimento ["direita"]= 0
+                    
+
+        for rosquinha in all_guardas:
+            if rosquinha.rect.right < 0:
+                # Destrói o bloco e cria um novo no final da tela
+                rosquinha.kill()
+                rosquinha_x = random.randint(WIDTH, int(WIDTH * 1.5))
+                rosquinha_y = 330
+                new_rosquinha = Guard(rosquinha0)
+                all_sprites.add(new_rosquinha)
+                all_guardas.add(new_rosquinha)
+
         
         all_sprites.update()
 
         colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
+        if colisao:
+            r = Guard(rosquinha0)
+            all_sprites.add(r)
+            all_guardas.add(r)
 
         colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
         if colisao:
