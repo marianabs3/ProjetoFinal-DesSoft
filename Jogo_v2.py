@@ -334,7 +334,7 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     while game:
-        MenuInicial()
+        MenuInicial(tela)
         clock.tick(120)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
