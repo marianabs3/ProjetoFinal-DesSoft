@@ -5,6 +5,7 @@ import pygame
 import os
 from pygame.locals import *
 import random
+from menu import MenuInicial
 from Jogo_v1 import tela1
 
 
@@ -333,6 +334,7 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     while game:
+        MenuInicial()
         clock.tick(120)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -437,12 +439,13 @@ def game_screen(tela):
         # all_candies.draw(tela)
 
         all_sprites.update()       
-        
+
+        colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
         if vanellope.colidiu_block:
             vanellope.colidiu_block = False
             block.image = brigadeiro
             tela1(tela)   
-
+        
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
         if colisao:
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
