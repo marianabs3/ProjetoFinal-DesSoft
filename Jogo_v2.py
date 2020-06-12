@@ -327,6 +327,10 @@ def game_screen(tela):
         all_sprites.add(cake)
         blocks.add(cake)
 
+        pygame.mixer.music.load('sons/fight_looped.wav')
+        pygame.mixer.music.play(-1)
+
+
     # Loop principal do jogo
     distance = 0
     create_distance = 100
