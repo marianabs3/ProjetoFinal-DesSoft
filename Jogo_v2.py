@@ -5,7 +5,9 @@ import pygame
 import os
 from pygame.locals import *
 import random
-#from menu import MenuInicial
+from menu import MenuInicial
+from menu import MenuInicial2
+from menu import MenuInicial3
 from Jogo_v1 import tela1
 
 
@@ -17,6 +19,12 @@ HEIGHT = 500
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Fuga Doce")
 
+# Estados para controle do fluxo da aplicação
+INIT = 3
+INIT2 = 4
+INIT3 = 5
+GAME = 6
+QUIT = 7
 
 TILE_SIZE = 60
 
@@ -351,7 +359,6 @@ def game_screen(tela):
     game = True
     lives = 3
     while game:
-        #MenuInicial(tela)
         clock.tick(120)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -485,7 +492,16 @@ def game_screen(tela):
 
         pygame.display.update()
 
-try:
-    game_screen(tela)
-finally:
-    pygame.quit()
+
+state = INIT
+while state != QUIT:
+    if state == INIT:
+        state = MenuInicial(tela)
+    elif state == INIT2:
+        state = MenuInicial2(tela)
+    elif state == INIT3:
+        state = MenuInicial3(tela)
+    elif state == GAME:
+        state = game_screen(tela)
+    else:
+        state = QUIT
