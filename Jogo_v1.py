@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 import pygame
 import random
+#from Jogo_v2 import tela2
 
 def main():
     """Rotina principal do jogo"""
@@ -241,7 +244,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
             if colisao:
-                jogador.image = imagem2
+                return
                 
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
@@ -253,14 +256,17 @@ def tela1(surf):
                 all_sprites.add(c)
                 all_cokes.add(c)
             
-    surf = pygame.display.set_mode((WIDTH, HEIGHT))
+            pygame.display.flip()
+
+            
+#     surf = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-    pygame.display.flip() #faz atualização da tela
+#     pygame.display.flip() #faz atualização da tela
 
-    try:
-        game_screen(surf)
-    finally:
-        pygame.quit()
-if __name__ == "__main__":
-    main()
+#     try:
+    game_screen(surf)
+#     finally:
+#         pygame.quit()
+ #if __name__ == "__main__":
+#     main()

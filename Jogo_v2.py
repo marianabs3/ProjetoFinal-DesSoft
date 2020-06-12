@@ -7,7 +7,15 @@ from pygame.locals import *
 import random
 from Jogo_v1 import tela1
 
+
 pygame.init()
+
+WIDTH = 1100
+HEIGHT = 500
+
+tela = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Fuga Doce")
+
 
 TILE_SIZE = 60
 
@@ -42,10 +50,6 @@ INITIAL_BLOCKS = 1
 CAKE_BLOCKS = 8
 
 BLACK = (0, 0, 0)
-
-# Cria a tela
-tela = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Fuga Doce")
 
 # Carrega imagem de fundo
 background = pygame.image.load('imagens/fundo2.png')
@@ -114,8 +118,8 @@ class Vanellope(pygame.sprite.Sprite):
         
         # Armazena imagens de movimento em uma lista
         self.images = [imagem1,
-                       imagem2,
-                       imagem3]
+                    imagem2,
+                    imagem3]
 
         self.imagem_atual = 0
         self.state = STILL
@@ -180,7 +184,7 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.x += self.speedx
         collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
         self.rect.x -= self.speedx
-       
+    
         # Corrige a posição do personagem para antes da colisão
         # for collision in collisions:
         #     # Estava indo para a direita
@@ -203,7 +207,7 @@ class Vanellope(pygame.sprite.Sprite):
             self.rect.right = WIDTH -1
         if self.rect.left < 0:   
             self.rect.left = 0
-                         
+                        
         # Percorre lista das imagens e cria animação
         self.imagem_atual = (self.imagem_atual + 1) % 2  # Volta para imagem 0 da lista
         self.image = self.images[ self.imagem_atual ]
@@ -216,15 +220,15 @@ class Vanellope(pygame.sprite.Sprite):
         if self.speedy != 0:
             self.image = pygame.image.load('imagens/penelope_jump.png').convert_alpha()
 
-       
+    
 class Guard(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
     
         # Armazena imagens de movimento em uma lista    
         self.images = [rosquinha0,
-                       rosquinha1,
-                       rosquinha2]
+                    rosquinha1,
+                    rosquinha2]
 
         self.current_image = 0
         self.speedx = -2
@@ -242,11 +246,11 @@ class Guard(pygame.sprite.Sprite):
     
         self.rect.x += self.speedx
         #if self.rect.right > WIDTH:
-         #   self.rect.right = WIDTH
-          #  self.speedx = -2
+        #   self.rect.right = WIDTH
+        #  self.speedx = -2
         #if self.rect.left < 0:   
-         #   self.rect.left = 0
-          #  self.speedx = 2
+        #   self.rect.left = 0
+        #  self.speedx = 2
         
         #Percorre lista das imagens e cria animação
         self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
@@ -385,7 +389,7 @@ def game_screen(tela):
             all_sprites.add(new_block)
             block_sprites.add(new_block)
             blocks.add(new_block)        
-  
+
         if distance2 > create_distance2:
             create_distance2 = distance2 + 100
             cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
@@ -432,19 +436,12 @@ def game_screen(tela):
         # all_candies.update()
         # all_candies.draw(tela)
 
-        all_sprites.update()      
-
-        block_sprites  
+        all_sprites.update()       
         
         if vanellope.colidiu_block:
             vanellope.colidiu_block = False
             block.image = brigadeiro
             tela1(tela)   
-               
-
-                
-            
-
 
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
         if colisao:
