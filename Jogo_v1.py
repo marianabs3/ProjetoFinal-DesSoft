@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 import random
+from Jogo_v2 import tela2
 
 def main():
     """Rotina principal do jogo"""
@@ -65,8 +66,8 @@ def tela1(surf):
             self.all_arcoiris = all_arcoiris
             self.tiro_imagem = tiro_imagem
 
-        #def update(self):
-            #self.rect.x += self.speedx
+        def update(self):
+            self.rect.x += self.speedx
             #collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
             #self.rect.x -= self.speedx
             #self.rect.x +=(delta_movimento["direita"] - delta_movimento["esquerda"])*self.speedx*delta_time
@@ -241,8 +242,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
             if colisao:
-                jogador.image = imagem2
-                
+                tela2(surf)                
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
             if colisao:
