@@ -44,6 +44,9 @@ VANELLOPE_HEIGHT = 100
 GUARDA_WIDTH = 180
 GUARDA_HEIGHT = 180
 
+LIVES_WIDTH = 80
+LIVES_HEIGHT = 80
+
 BRIGADEIRO_WIDTH = 100
 BRIGADEIRO_HEIGHT = 100
 
@@ -85,8 +88,11 @@ rosquinha1 = pygame.transform.scale(rosquinha1, (GUARDA_WIDTH, GUARDA_HEIGHT))
 rosquinha2 = pygame.image.load('imagens/rosquinha_move2.png').convert_alpha()
 rosquinha2 = pygame.transform.scale(rosquinha2, (GUARDA_WIDTH, GUARDA_HEIGHT))
 
-class Tile(pygame.sprite.Sprite):
+lives_img = pygame.image.load('imagens/vida2.png').convert_alpha()
+lives_img = pygame.transform.scale(lives_img, (LIVES_WIDTH, LIVES_HEIGHT))
+lives_rect = lives_img.get_rect()
 
+class Tile(pygame.sprite.Sprite):
     # Construtor da classe.
     def __init__(self, tile_img, x, y):
         # Construtor da classe pai (Sprite).
@@ -127,6 +133,9 @@ class Vanellope(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.real_speedx = 0
+        self.lives = 3
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
 
         self.image = imagem0
         
@@ -145,6 +154,8 @@ class Vanellope(pygame.sprite.Sprite):
         if self.state == STILL:
             self.speedy -= JUMP_SIZE
             self.state = JUMPING
+
+
         
     # Carrega as informações
     def update(self):
@@ -309,6 +320,7 @@ def game_screen(tela):
     position_y = [80]
     position2_y = [210]
 
+
     for i in range(INITIAL_BLOCKS):
         block_x = random.randint(WIDTH, int(WIDTH * 1.5))
         block_y = random.choice(position_y)
@@ -328,9 +340,8 @@ def game_screen(tela):
         blocks.add(cake)
 
         pygame.mixer.music.load('sons/Christmas synths.ogg')
-        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.play(-1)
-
 
     # Loop principal do jogo
     distance = 0
@@ -338,6 +349,7 @@ def game_screen(tela):
     distance2 = 0
     create_distance2 = 100
     game = True
+    lives = 3
     while game:
         #MenuInicial(tela)
         clock.tick(120)
@@ -345,6 +357,7 @@ def game_screen(tela):
             if event.type == pygame.QUIT:
                 game == False
                 pygame.quit()
+    
             if event.type == pygame.KEYDOWN:
             
             # Dependendo da tecla, altera a velocidade.
@@ -418,7 +431,6 @@ def game_screen(tela):
 
         all_sprites.update()
 
-
         tela.fill(BLACK) 
         
         tela.blit(background, background_rect)
@@ -451,19 +463,25 @@ def game_screen(tela):
             block.image = brigadeiro
             tela1(tela)   
         
-        colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
+        colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
         if colisao:
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
-                r = Guard()
-                all_sprites.add(r)
-                all_guardas.add(r)
             else:
-                vanellope.image = imagem1
-                vanellope.kill()
+                #vanellope.image = imagem1
+                lives -= 1
 
-                pygame.quit()
+            r = Guard()
+            all_sprites.add(r)
+            all_guardas.add(r)
+
+        if lives == 0:    
+            pygame.quit()
             
+        for i in range(lives):
+            lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
+            tela.blit(lives_img, lives_rect)
+
 
         pygame.display.update()
 
