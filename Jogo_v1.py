@@ -65,8 +65,8 @@ def tela1(surf):
             self.all_arcoiris = all_arcoiris
             self.tiro_imagem = tiro_imagem
 
-        def update(self):
-            self.rect.x += self.speedx
+        #def update(self):
+            #self.rect.x += self.speedx
             #collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
             #self.rect.x -= self.speedx
             #self.rect.x +=(delta_movimento["direita"] - delta_movimento["esquerda"])*self.speedx*delta_time

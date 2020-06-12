@@ -109,7 +109,7 @@ class Tile(pygame.sprite.Sprite):
 
 # Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
-    def __init__(self, all_sprites):
+    def __init__(self, all_sprites, block_sprites):
         pygame.sprite.Sprite.__init__(self)
         
         # Armazena imagens de movimento em uma lista
@@ -131,6 +131,8 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.bottom = int(HEIGHT * 7 / 8)
 
         self.all_sprites = all_sprites
+        self.block_sprites = block_sprites
+        self.colidiu_block = False
         self.mask = pygame.mask.from_surface(self.image)
 
     # Define o movimento de pular 
@@ -148,6 +150,12 @@ class Vanellope(pygame.sprite.Sprite):
             self.state = FALLING
         
         self.rect.y += self.speedy
+        
+        if self.speedy < 0:
+            collisions = pygame.sprite.spritecollide(self, self.block_sprites, False, pygame.sprite.collide_mask)
+            for collision in collisions:
+                print(self.rect.y, collision.rect.bottom)
+                self.colidiu_block = True
 
         # Se colidiu com algum bloco, volta para o ponto antes da colisão
         collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
@@ -282,12 +290,12 @@ def game_screen(tela):
     #van_group = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group() #vanellope
     all_guardas = pygame.sprite.Group()
-    vanellope = Vanellope(blocks)
-    all_sprites.add(vanellope)
     #van_group.add(vanellope)
     all_brigadeiro = pygame.sprite.Group()
     block_sprites = pygame.sprite.Group() #bloco também
     cake_sprites = pygame.sprite.Group()
+    vanellope = Vanellope(blocks, block_sprites)
+    all_sprites.add(vanellope)
 
     rosquinha = Guard()
     all_sprites.add(rosquinha)
@@ -427,10 +435,12 @@ def game_screen(tela):
         all_sprites.update()      
 
         block_sprites  
-        colisao = pygame.sprite.spritecollide(vanellope, block_sprites, False)
-        if colisao:
+        
+        if vanellope.colidiu_block:
+            vanellope.colidiu_block = False
             block.image = brigadeiro
-            tela1(tela)            
+            tela1(tela)   
+               
 
                 
             
