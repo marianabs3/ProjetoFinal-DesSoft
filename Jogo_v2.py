@@ -5,7 +5,7 @@ import pygame
 import os
 from pygame.locals import *
 import random
-from menu import MenuInicial
+#from menu import MenuInicial
 from Jogo_v1 import tela1
 
 
@@ -327,7 +327,8 @@ def game_screen(tela):
         all_sprites.add(cake)
         blocks.add(cake)
 
-        pygame.mixer.music.load('sons/fight_looped.wav')
+        pygame.mixer.music.load('sons/Christmas synths.ogg')
+        pygame.mixer.music.set_volume(0.05)
         pygame.mixer.music.play(-1)
 
 
@@ -338,7 +339,7 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     while game:
-        MenuInicial(tela)
+        #MenuInicial(tela)
         clock.tick(120)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

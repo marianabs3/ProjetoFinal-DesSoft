@@ -181,6 +181,10 @@ def tela1(surf):
             all_sprites.add(coke1)
             all_cokes.add(coke1)
 
+        pygame.mixer.music.load('sons/fight_looped.wav')
+        pygame.mixer.music.set_volume(0.1)
+        pygame.mixer.music.play(-1)
+
         while game:
             delta_time = clock.tick(60) #garantes um FPS máximo de 60 Hz
             eventos = pygame.event.get()
