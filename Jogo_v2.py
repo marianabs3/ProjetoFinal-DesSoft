@@ -8,6 +8,7 @@ import random
 from menu import MenuInicial
 from menu import MenuInicial2
 from menu import MenuInicial3
+from menu import end_screen
 from Jogo_v1 import tela1
 
 
@@ -24,7 +25,8 @@ INIT = 3
 INIT2 = 4
 INIT3 = 5
 GAME = 6
-QUIT = 7
+END = 7
+QUIT = 8
 
 TILE_SIZE = 60
 
@@ -491,9 +493,9 @@ def game_screen(tela):
             all_sprites.add(r)
             all_guardas.add(r)
 
-        if lives == 0:    
-            pygame.quit()
-            
+        if lives == 0:
+            end_screen(tela)   
+    
         for i in range(lives):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
@@ -515,5 +517,7 @@ while state != QUIT:
         state = MenuInicial3(tela)
     elif state == GAME:
         state = game_screen(tela)
+    elif state == END:
+        state = end_screen(tela)
     else:
         state = QUIT
