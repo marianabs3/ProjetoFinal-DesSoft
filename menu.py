@@ -5,7 +5,7 @@ from pygame.locals import *
 menu_img = pygame.image.load('imagens/tela_1.jpeg')
 menu_img1 = pygame.image.load('imagens/tela_2.jpeg')
 menu_img2 = pygame.image.load('imagens/tela_3.jpeg')
-eng_img = pygame.image.load('imagens/Fundo Doce (4).png')
+eng_img = pygame.image.load('imagens/Fuga Doce (4).png')
 
 INIT = 3
 INIT2 = 4

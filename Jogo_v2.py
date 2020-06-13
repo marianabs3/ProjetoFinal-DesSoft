@@ -494,7 +494,9 @@ def game_screen(tela):
             all_guardas.add(r)
 
         if lives == 0:
+            pygame.mixer.music.stop() 
             end_screen(tela)   
+            
     
         for i in range(lives):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
