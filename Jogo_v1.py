@@ -26,6 +26,8 @@ def tela1(surf):
     COKE_HEIGHT = 50
     GUARDA_WIDTH = 200
     GUARDA_HEIGHT = 200
+    CAKE_BLOCKS = 8
+    TILE_SIZE = 60
     background = pygame.image.load('imagens/fundo2.png').convert_alpha()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     background_rect = background.get_rect()
@@ -33,11 +35,14 @@ def tela1(surf):
     font = pygame.font.SysFont(None, 20)
     text = font.render('COMBUSTÍVEL', True, (0, 0, 0))
 
+    cake_img = pygame.image.load('imagens/bloco_cake.png').convert_alpha()
+
     imagem = pygame.image.load('imagens/vanellope_up.png').convert_alpha()
     imagem = pygame.transform.scale(imagem, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT))
 
     coke = pygame.image.load('imagens/New Piskel (3).png').convert_alpha()
     coke = pygame.transform.scale(coke, (COKE_WIDTH, COKE_HEIGHT))  
+    coke_rect = coke.get_rect()
 
     imagem2 = pygame.image.load('imagens/penelope_frente.png').convert_alpha()
     imagem2 = pygame.transform.scale(imagem2, (VANELLOPE_WIDTH, VANELLOPE_HEIGHT)) 
@@ -50,9 +55,42 @@ def tela1(surf):
     rosquinha2 = pygame.transform.scale(rosquinha2, (GUARDA_WIDTH, GUARDA_HEIGHT))
 
     tiro_imagem = pygame.image.load('imagens/tiro.png').convert_alpha()
+    #Música:
+    pygame.mixer.music.load('sons/fight_looped.wav')
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.play(-1)
+    som_tiro = pygame.mixer.Sound('sons/tiro.ogg')
+    som_colisao = pygame.mixer.Sound('sons/Record.ogg')
+
+    class Tile(pygame.sprite.Sprite):
+    # Construtor da classe.
+        def __init__(self, tile_img, x, y):
+            # Construtor da classe pai (Sprite).
+            pygame.sprite.Sprite.__init__(self)
+
+            # Aumenta o tamanho do tile.
+            tile_img = pygame.transform.scale(tile_img, (TILE_SIZE, TILE_SIZE))
+
+            # Define a imagem do tile.
+            self.image = tile_img
+            # Detalhes sobre o posicionamento.
+            self.rect = self.image.get_rect()
+
+            self.mask = pygame.mask.from_surface(self.image)
+
+
+            # Posiciona o tile
+            self.rect.x = x
+            self.rect.y = y
+
+            self.speedx = 0
+
+        def update(self):
+            self.rect.x += self.speedx
+
 
     class Carro(pygame.sprite.Sprite):
-        def __init__(self, img, all_sprites, all_arcoiris, tiro_imagem):
+        def __init__(self, img, all_sprites, all_arcoiris, tiro_imagem, som_tiro, cake_sprites):
             pygame.sprite.Sprite.__init__(self)
 
             self.image = img
@@ -67,6 +105,7 @@ def tela1(surf):
             self.all_sprites = all_sprites
             self.all_arcoiris = all_arcoiris
             self.tiro_imagem = tiro_imagem
+            self.som_tiro = som_tiro
 
         #def update(self):
             #self.rect.x += self.speedx
@@ -78,6 +117,7 @@ def tela1(surf):
             new_tiro = Arcoiris(self.tiro_imagem, self.rect.right, self.rect.centery)
             self.all_sprites.add(new_tiro)
             self.all_arcoiris.add(new_tiro)
+            self.som_tiro.play()
 
     class Coke(pygame.sprite.Sprite):
         def __init__(self, img):
@@ -164,8 +204,9 @@ def tela1(surf):
         all_cokes = pygame.sprite.Group()
         all_guardas = pygame.sprite.Group()
         all_arcoiris = pygame.sprite.Group()
+        cake_sprites = pygame.sprite.Group()
 
-        jogador = Carro(imagem, all_sprites, all_arcoiris, tiro_imagem)
+        jogador = Carro(imagem, all_sprites, all_arcoiris, tiro_imagem, som_tiro, cake_sprites)
         all_sprites.add(jogador)
         rosquinha = Guard(rosquinha0)
         all_sprites.add(rosquinha)
@@ -176,14 +217,25 @@ def tela1(surf):
             #all_sprites.add(guarda1)
             #all_guardas.add(guarda1)
         
-        for i in range(1):
+        for i in range(3):
             coke1 = Coke(coke)
             all_sprites.add(coke1)
             all_cokes.add(coke1)
 
-        pygame.mixer.music.load('sons/fight_looped.wav')
-        pygame.mixer.music.set_volume(0.1)
-        pygame.mixer.music.play(-1)
+        position2_y = [210]
+
+        for i in range(CAKE_BLOCKS):
+            cake_x = random.randint(800, WIDTH)
+            cake_y = random.choice(position2_y)
+            cake = Tile(cake_img, cake_x, cake_y)
+            cake_sprites.add(cake)
+            all_sprites.add(cake)
+        
+        distance2 = 0
+        create_distance2 = 100
+        cokes = 3
+        keys_down = {}
+      
 
         while game:
             delta_time = clock.tick(60) #garantes um FPS máximo de 60 Hz
@@ -193,18 +245,22 @@ def tela1(surf):
                     pygame.quit() #terminado a aplicação do pygame
                     sys.exit() #sair pela rotina do sistema 
                 if evento.type == pygame.KEYDOWN:
+                    keys_down[evento.key] = True
                     if evento.key == pygame.K_LEFT:
+                        cokes -= 1
                         jogador.speedx -= 4
                     if evento.key == pygame.K_RIGHT:
+                        cokes -= 1
                         jogador.speedx += 4
                     if evento.key == pygame.K_SPACE:
                         jogador.shoot()
                 if evento.type == pygame.KEYUP:
-                    if evento.key == pygame.K_LEFT:
-                        jogador.speedx += 4
-                    if evento.key == pygame.K_RIGHT:
-                        jogador.speedx -= 4
-                        
+                    if evento.key in keys_down and keys_down[evento.key]:
+                        if evento.key == pygame.K_LEFT:
+                            jogador.speedx += 4
+                        if evento.key == pygame.K_RIGHT:
+                            jogador.speedx -= 4
+                            
 
             for rosquinha in all_guardas:
                 if rosquinha.rect.right < 0:
@@ -219,11 +275,24 @@ def tela1(surf):
             
             all_sprites.update()
 
+            for cake in cake_sprites:
+                cake.speedx = -jogador.speedx
+            
+            distance2 += jogador.speedx
+
             background_rect.x -= jogador.speedx
             if background_rect.right < 0:
                 background_rect.x += background_rect.width
             if background_rect.left >= WIDTH:
                 background_rect.x -= background_rect.width
+
+            if distance2 > create_distance2:
+                create_distance2 = distance2 + 100
+                cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
+                cake_y = random.choice(position2_y)
+                new_cake = Tile(cake_img, cake_x, cake_y)
+                all_sprites.add(new_cake)
+                cake_sprites.add(new_cake)
 
             surf.fill([255, 255, 255])
 
@@ -249,16 +318,26 @@ def tela1(surf):
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
             if colisao:
                 return
+                keys_down = {}
                 
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
             if colisao:
+                cokes += 1
+                som_colisao.play()
                 jogador.speedx += 0.05
             
             for coke1 in colisao:
                 c = Coke(coke)
                 all_sprites.add(c)
                 all_cokes.add(c)
+
+            for i in range(cokes):
+                coke_rect.bottomleft = (10 + i*(COKE_WIDTH-20), HEIGHT - 450)
+                surf.blit(coke, coke_rect)
+
+            if cokes == 0:
+                return
             
             pygame.display.flip()
 

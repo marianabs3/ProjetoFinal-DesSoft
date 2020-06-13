@@ -34,7 +34,7 @@ BLOCK_HEIGHT = 1000
 # Tamanho da tela
 WIDTH = 1100
 HEIGHT = 500
-JUMP_SIZE = 50 #TILE_SIZE/3
+JUMP_SIZE = 40 #TILE_SIZE/3
 SPEED = 10
 GRAVITY = 2
 GROUND = HEIGHT * 5 // 6
@@ -358,6 +358,7 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     lives = 3
+    keys_down = {}
     while game:
         clock.tick(120)
         for event in pygame.event.get():
@@ -366,7 +367,7 @@ def game_screen(tela):
                 pygame.quit()
     
             if event.type == pygame.KEYDOWN:
-            
+                keys_down[event.key] = True            
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_LEFT:
                     vanellope.speedx -= 4
@@ -375,14 +376,15 @@ def game_screen(tela):
             
             # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
+                if event.key in keys_down and keys_down[event.key]:
                 
                 # Dependendo da tecla, altera a velocidade.
-                if event.key == pygame.K_LEFT:
-                    vanellope.speedx += 4
-                if event.key == pygame.K_RIGHT:
-                    vanellope.speedx -= 4
-                if event.key == pygame.K_UP:
-                    vanellope.jump()
+                    if event.key == pygame.K_LEFT:
+                        vanellope.speedx += 4
+                    if event.key == pygame.K_RIGHT:
+                        vanellope.speedx -= 4
+                    if event.key == pygame.K_UP:
+                        vanellope.jump()
 
         all_sprites.update()
 
@@ -467,17 +469,19 @@ def game_screen(tela):
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
         if vanellope.colidiu_block:
             vanellope.colidiu_block = False
-            block.image = brigadeiro
+            #block.image = brigadeiro
             tela1(tela)   
         
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
         if colisao:
+            keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
             else:
                 #vanellope.image = imagem1
                 lives -= 1
-
+            
+            
             r = Guard()
             all_sprites.add(r)
             all_guardas.add(r)
