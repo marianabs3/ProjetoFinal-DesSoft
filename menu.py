@@ -5,6 +5,7 @@ from pygame.locals import *
 menu_img = pygame.image.load('imagens/tela_1.jpeg')
 menu_img1 = pygame.image.load('imagens/tela_2.jpeg')
 menu_img2 = pygame.image.load('imagens/tela_3.jpeg')
+eng_img = pygame.image.load('imagens/Fundo Doce (4).png')
 
 INIT = 3
 INIT2 = 4
@@ -124,7 +125,7 @@ def end_screen(window):
     while dado:
         # ----- Trata eventos
         clock = pygame.time.Clock()
-        window.blit(menu_img2, (0,0))
+        window.blit(eng_img, (0,0))
 
         for event in pygame.event.get():
             # ----- Verifica consequências
