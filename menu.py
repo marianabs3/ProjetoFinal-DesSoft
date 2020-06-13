@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import pygame
 import os
 from pygame.locals import *
 
-menu_img = pygame.image.load('imagens/tela_1.jpeg')
-menu_img1 = pygame.image.load('imagens/tela_2.jpeg')
-menu_img2 = pygame.image.load('imagens/tela_3.jpeg')
-eng_img = pygame.image.load('imagens/Fuga Doce (4).png')
+menu_img = pygame.image.load('imagens/Inicio1.png')
+menu_img1 = pygame.image.load('imagens/Inicio2.png')
+menu_img2 = pygame.image.load('imagens/Inicio3.png')
+eng_img = pygame.image.load('imagens/GameOver.png')
 
 INIT = 3
 INIT2 = 4
