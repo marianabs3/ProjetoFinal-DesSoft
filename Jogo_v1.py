@@ -32,8 +32,7 @@ def tela1(surf):
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
     background_rect = background.get_rect()
 
-    font = pygame.font.SysFont(None, 20)
-    text = font.render('COMBUSTÍVEL', True, (0, 0, 0))
+    font = pygame.font.Font('fontes/Pixeled.ttf', 20)
 
     cake_img = pygame.image.load('imagens/bloco_cake.png').convert_alpha()
 
@@ -234,6 +233,7 @@ def tela1(surf):
         distance2 = 0
         create_distance2 = 100
         cokes = 3
+        pontuacao = 0
         keys_down1 = {}
       
 
@@ -311,6 +311,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
             if colisao:
+                pontuacao += 100
                 r = Guard(rosquinha0)
                 all_sprites.add(r)
                 all_guardas.add(r)
@@ -337,6 +338,11 @@ def tela1(surf):
 
             if cokes == 0:
                 return
+
+            text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
+            text_rect = text_surface.get_rect()
+            text_rect.midtop = (WIDTH / 2,  10)
+            surf.blit(text_surface, text_rect)
             
             pygame.display.flip()
 
