@@ -8,7 +8,6 @@ import random
 from menu import MenuInicial
 from menu import MenuInicial2
 from menu import MenuInicial3
-from menu import end_screen
 from Jogo_v1 import tela1
 
 
@@ -25,8 +24,7 @@ INIT = 3
 INIT2 = 4
 INIT3 = 5
 GAME = 6
-END = 7
-QUIT = 8
+QUIT = 7
 
 TILE_SIZE = 60
 
@@ -143,6 +141,9 @@ class Vanellope(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.real_speedx = 0
+        self.lives = 3
+        self.hidden = False
+        self.hide_timer = pygame.time.get_ticks()
 
         self.image = imagem0
         
@@ -486,9 +487,8 @@ def game_screen(tela):
             all_sprites.add(r)
             all_guardas.add(r)
 
-        if lives == 0:  
-            return END
-            #pygame.quit()
+        if lives == 0:    
+            pygame.quit()
             
         for i in range(lives):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
@@ -508,7 +508,5 @@ while state != QUIT:
         state = MenuInicial3(tela)
     elif state == GAME:
         state = game_screen(tela)
-    elif state == END:
-        state = end_screen(tela)
     else:
         state = QUIT
