@@ -470,11 +470,12 @@ def game_screen(tela):
         if vanellope.colidiu_block:
             vanellope.colidiu_block = False
             #block.image = brigadeiro
+            keys_down = {}
             tela1(tela)   
         
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
         if colisao:
-            keys_down = {}
+            #keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
             else:

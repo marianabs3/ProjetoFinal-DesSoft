@@ -234,7 +234,7 @@ def tela1(surf):
         distance2 = 0
         create_distance2 = 100
         cokes = 3
-        keys_down = {}
+        keys_down1 = {}
       
 
         while game:
@@ -245,7 +245,7 @@ def tela1(surf):
                     pygame.quit() #terminado a aplicação do pygame
                     sys.exit() #sair pela rotina do sistema 
                 if evento.type == pygame.KEYDOWN:
-                    keys_down[evento.key] = True
+                    keys_down1[evento.key] = True
                     if evento.key == pygame.K_LEFT:
                         cokes -= 1
                         jogador.speedx -= 4
@@ -255,7 +255,7 @@ def tela1(surf):
                     if evento.key == pygame.K_SPACE:
                         jogador.shoot()
                 if evento.type == pygame.KEYUP:
-                    if evento.key in keys_down and keys_down[evento.key]:
+                    if evento.key in keys_down1 and keys_down1[evento.key]:
                         if evento.key == pygame.K_LEFT:
                             jogador.speedx += 4
                         if evento.key == pygame.K_RIGHT:
@@ -317,9 +317,8 @@ def tela1(surf):
 
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
             if colisao:
+                keys_down1 = {}
                 return
-                keys_down = {}
-                
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
             if colisao:
