@@ -481,7 +481,7 @@ def game_screen(tela):
             #keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
-                pontuacao += 1
+                pontuacao += 100
             else:
                 #vanellope.image = imagem1
                 lives -= 1
@@ -498,10 +498,10 @@ def game_screen(tela):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
 
-        text_surface = font.render("{:08d}".format(pontuacao), True, (255, 255, 0))
+        text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 2,  10)
-        surf.blit(text_surface, text_rect)
+        tela.blit(text_surface, text_rect)
         pygame.display.update()
 
 
