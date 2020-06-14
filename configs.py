@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-<<<<<<< HEAD
 pontuacao = 0
-=======
 # Tamanho da tela
 WIDTH = 1100
 HEIGHT = 500
->>>>>>> d9d9c67a06cc6aa22f25db1c53ca525f6270b436
 
 # Tamanho do pulo e bloco
 JUMP_SIZE = 50 

@@ -256,7 +256,6 @@ def tela1(surf):
                     sys.exit() #sair pela rotina do sistema 
                 if evento.type == pygame.KEYDOWN:
                     keys_down1[evento.key] = True
-                    coke1.cokes_number -= 1
                     if evento.key == pygame.K_LEFT:
                         jogador.speedx -= 8
                     if evento.key == pygame.K_RIGHT:

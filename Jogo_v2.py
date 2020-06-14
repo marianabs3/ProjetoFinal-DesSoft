@@ -5,14 +5,11 @@ import pygame
 import os
 from pygame.locals import *
 import random
-<<<<<<< HEAD
 from menu import MenuInicial, MenuInicial2, MenuInicial3, pontinhos
 from menu import end_screen
 from configs import INIT, INIT2, INIT3, GAME, END, QUIT
-=======
 from menu import *
 from configs import *
->>>>>>> d9d9c67a06cc6aa22f25db1c53ca525f6270b436
 from Jogo_v1 import tela1
 
 pygame.init()
