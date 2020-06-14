@@ -5,11 +5,11 @@ import os
 from pygame.locals import *
 from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 
+# Carregando imagens do Menu
 menu_img = pygame.image.load('imagens/Inicio1.png')
 menu_img1 = pygame.image.load('imagens/Inicio2.png')
 menu_img2 = pygame.image.load('imagens/Inicio3.png')
 eng_img = pygame.image.load('imagens/GameOver.png')
-
 
 
 def MenuInicial(window):
@@ -75,8 +75,6 @@ def MenuInicial2(window):
                 if event.key == pygame.K_SPACE:
                     bola = False
                     return INIT3
-        # ----- Gera saídas
-        #window.fill((0, 0, 255))  # Preenche com a cor branca
 
         # ----- Atualiza estado do jogo
         pygame.display.update()  # Mostra o novo frame para o jogador
@@ -107,10 +105,6 @@ def MenuInicial3(window):
                 if event.key == pygame.K_RIGHT:
                     amor = False
                     return GAME
-        
-
-        # ----- Gera saídas
-        #window.fill((0, 0, 255))  # Preenche com a cor branca
 
         # ----- Atualiza estado do jogo
         pygame.display.update()  # Mostra o novo frame para o jogador
@@ -141,10 +135,6 @@ def end_screen(window):
                 if event.key == pygame.K_p:
                     dado = False
                     return QUIT
-        
-
-        # ----- Gera saídas
-        #window.fill((0, 0, 255))  # Preenche com a cor branca
 
         # ----- Atualiza estado do jogo
         pygame.display.update()  # Mostra o novo frame para o jogador
