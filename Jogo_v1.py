@@ -132,14 +132,21 @@ def tela1(surf):
             self.now = pygame.time.get_ticks()
        
         def update(self):
-            if pygame.time.get_ticks() - self.cokes_time > 3000:
-                self.cokes_number -= 1
 
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if self.rect.top > HEIGHT or self.rect.right + COKE_WIDTH < 0 or self.rect.left > WIDTH:
                 self.rect.x = random.randint(0, WIDTH - COKE_WIDTH)
                 self.rect.y = random.randint(-50, -COKE_HEIGHT)
+
+        def passatempo(self):
+
+            now = pygame.time.get_ticks()
+            delta_t = now - self.cokes_time
+
+            if delta_t > 5000:
+                self.cokes_time = now
+                self.cokes_number -= 1
 
     class Guard(pygame.sprite.Sprite):
         def __init__(self, img):
@@ -251,10 +258,8 @@ def tela1(surf):
                 if evento.type == pygame.KEYDOWN:
                     keys_down1[evento.key] = True
                     if evento.key == pygame.K_LEFT:
-                        coke1.cokes_number -= 1
                         jogador.speedx -= 8
                     if evento.key == pygame.K_RIGHT:
-                        coke1.cokes_number -= 1
                         jogador.speedx += 8
                     if evento.key == pygame.K_SPACE:
                         jogador.shoot()
@@ -331,10 +336,14 @@ def tela1(surf):
                 som_colisao.play()
                 jogador.speedx += 0.05
             
-            for coke1 in colisao:
+            for i in range(len(colisao)):
                 c = Coke(coke)
                 all_sprites.add(c)
                 all_cokes.add(c)
+                c.passatempo()
+
+
+            coke1.passatempo()
 
             for i in range(coke1.cokes_number):
                 coke_rect.bottomleft = (10 + i*(COKE_WIDTH-20), HEIGHT - 450)
