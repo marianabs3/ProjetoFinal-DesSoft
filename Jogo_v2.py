@@ -469,6 +469,7 @@ def game_screen(tela):
             #block.image = brigadeiro
             keys_down = {}
             tela1(tela)   
+            block.kill()
         
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
         if colisao:
@@ -479,7 +480,6 @@ def game_screen(tela):
             else:
                 #vanellope.image = imagem1
                 lives -= 1
-            
             
             r = Guard()
             all_sprites.add(r)
