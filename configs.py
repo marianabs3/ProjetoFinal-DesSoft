@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from os import path
 
 pontuacao = 0
 # Tamanho da tela
@@ -42,6 +43,13 @@ BRIGADEIRO_HEIGHT = 100
 # Número de blocos
 INITIAL_BLOCKS = 1
 CAKE_BLOCKS = 8
+
+# Estabelece a pasta que contem as figuras e sons.
+IMAGENS_DIR = path.join(path.dirname(__file__), 'assets', 'imagens')
+SONS_DIR = path.join(path.dirname(__file__), 'assets', 'sons')
+FONTES_DIR = path.join(path.dirname(__file__), 'assets', 'fontes')
+
+FPS = 120
 
 BLACK = (0, 0, 0)
 
