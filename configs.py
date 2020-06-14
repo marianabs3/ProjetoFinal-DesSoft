@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+pontuacao = 0
 
 INIT = 3
 INIT2 = 4

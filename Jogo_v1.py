@@ -4,7 +4,8 @@ import os
 import sys
 import pygame
 import random
-#from Jogo_v2 import tela2
+from menu import pontinhos
+
 def main():
     """Rotina principal do jogo"""
 
@@ -243,10 +244,9 @@ def tela1(surf):
         
         distance2 = 0
         create_distance2 = 100
-        pontuacao = 0
+        pontos1 = 0
         keys_down1 = {}
       
-
         while game:
             delta_time = clock.tick(60) #garantes um FPS máximo de 60 Hz
             eventos = pygame.event.get()
@@ -319,7 +319,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
             if colisao:
-                pontuacao += 100
+                pontos1 += 200
                 r = Guard(rosquinha0)
                 all_sprites.add(r)
                 all_guardas.add(r)
@@ -351,7 +351,7 @@ def tela1(surf):
             if coke1.cokes_number == 0:
                 return
 
-            text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
+            text_surface = font.render("{:08d}".format(pontinhos(pontos1)), True, (255, 0, 0))
             text_rect = text_surface.get_rect()
             text_rect.midtop = (WIDTH / 2,  10)
             surf.blit(text_surface, text_rect)

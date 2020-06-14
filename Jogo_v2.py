@@ -5,7 +5,7 @@ import pygame
 import os
 from pygame.locals import *
 import random
-from menu import MenuInicial, MenuInicial2, MenuInicial3
+from menu import MenuInicial, MenuInicial2, MenuInicial3, pontinhos
 from menu import end_screen
 from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 from Jogo_v1 import tela1
@@ -354,7 +354,7 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     lives = 3
-    pontuacao = 0
+    pontos = 0
     keys_down = {}
     while game:
         clock.tick(120)
@@ -475,7 +475,7 @@ def game_screen(tela):
             #keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
-                pontuacao += 100
+                pontos += 100
             else:
                 #vanellope.image = imagem1
                 lives -= 1
@@ -494,7 +494,7 @@ def game_screen(tela):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
 
-        text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
+        text_surface = font.render("{:08d}".format(pontinhos(pontos)), True, (255, 0, 0))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 2,  10)
         tela.blit(text_surface, text_rect)
