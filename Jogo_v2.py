@@ -5,10 +5,9 @@ import pygame
 import os
 from pygame.locals import *
 import random
-from menu import MenuInicial
-from menu import MenuInicial2
-from menu import MenuInicial3
+from menu import MenuInicial, MenuInicial2, MenuInicial3
 from menu import end_screen
+from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 from Jogo_v1 import tela1
 
 
@@ -21,12 +20,7 @@ tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Fuga Doce")
 
 # Estados para controle do fluxo da aplicação
-INIT = 3
-INIT2 = 4
-INIT3 = 5
-GAME = 6
-END = 7
-QUIT = 8
+
 
 TILE_SIZE = 60
 
@@ -167,8 +161,6 @@ class Vanellope(pygame.sprite.Sprite):
             self.speedy -= JUMP_SIZE
             self.state = JUMPING
 
-
-        
     # Carrega as informações
     def update(self):
         

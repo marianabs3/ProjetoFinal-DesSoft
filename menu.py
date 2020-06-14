@@ -3,18 +3,13 @@
 import pygame
 import os
 from pygame.locals import *
+from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 
 menu_img = pygame.image.load('imagens/Inicio1.png')
 menu_img1 = pygame.image.load('imagens/Inicio2.png')
 menu_img2 = pygame.image.load('imagens/Inicio3.png')
 eng_img = pygame.image.load('imagens/GameOver.png')
 
-INIT = 3
-INIT2 = 4
-INIT3 = 5
-GAME = 6
-END = 7
-QUIT = 8
 
 
 def MenuInicial(window):

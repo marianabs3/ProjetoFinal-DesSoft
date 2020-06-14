@@ -129,7 +129,6 @@ def tela1(surf):
             self.speedy = 4
             self.cokes_number = 3
             self.cokes_time = pygame.time.get_ticks()
-            self.now = pygame.time.get_ticks()
        
         def update(self):
 
