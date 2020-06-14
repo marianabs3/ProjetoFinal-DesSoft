@@ -128,14 +128,8 @@ def tela1(surf):
             self.rect.y = random.randint(-50, -COKE_HEIGHT)
             self.speedx = 3
             self.speedy = 4
-            self.cokes_number = 3
-            self.cokes_time = pygame.time.get_ticks()
-            self.now = pygame.time.get_ticks()
        
         def update(self):
-            if pygame.time.get_ticks() - self.cokes_time > 3000:
-                self.cokes_number -= 1
-
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if self.rect.top > HEIGHT or self.rect.right + COKE_WIDTH < 0 or self.rect.left > WIDTH:
@@ -238,6 +232,7 @@ def tela1(surf):
         
         distance2 = 0
         create_distance2 = 100
+        cokes = 3
         pontuacao = 0
         keys_down1 = {}
       
@@ -252,19 +247,19 @@ def tela1(surf):
                 if evento.type == pygame.KEYDOWN:
                     keys_down1[evento.key] = True
                     if evento.key == pygame.K_LEFT:
-                        coke1.cokes_number -= 1
-                        jogador.speedx -= 8
+                        cokes -= 1
+                        jogador.speedx -= 4
                     if evento.key == pygame.K_RIGHT:
-                        coke1.cokes_number -= 1
-                        jogador.speedx += 8
+                        cokes -= 1
+                        jogador.speedx += 4
                     if evento.key == pygame.K_SPACE:
                         jogador.shoot()
                 if evento.type == pygame.KEYUP:
                     if evento.key in keys_down1 and keys_down1[evento.key]:
                         if evento.key == pygame.K_LEFT:
-                            jogador.speedx += 8
+                            jogador.speedx += 4
                         if evento.key == pygame.K_RIGHT:
-                            jogador.speedx -= 8
+                            jogador.speedx -= 4
                             
 
             for rosquinha in all_guardas:
@@ -328,7 +323,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
             if colisao:
-                coke1.cokes_number += 1
+                cokes += 1
                 som_colisao.play()
                 jogador.speedx += 0.05
             
@@ -337,11 +332,11 @@ def tela1(surf):
                 all_sprites.add(c)
                 all_cokes.add(c)
 
-            for i in range(coke1.cokes_number):
+            for i in range(cokes):
                 coke_rect.bottomleft = (10 + i*(COKE_WIDTH-20), HEIGHT - 450)
                 surf.blit(coke, coke_rect)
 
-            if coke1.cokes_number == 0:
+            if cokes == 0:
                 return
 
             text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
