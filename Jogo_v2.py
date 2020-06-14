@@ -30,7 +30,7 @@ BLOCK_HEIGHT = 1000
 # Tamanho da tela
 WIDTH = 1100
 HEIGHT = 500
-JUMP_SIZE = 40 #TILE_SIZE/3
+JUMP_SIZE = 50 #TILE_SIZE/3
 SPEED = 10
 GRAVITY = 2
 GROUND = HEIGHT * 5 // 6
@@ -67,7 +67,7 @@ background_rect = background.get_rect()
 font = pygame.font.Font('fontes/Pixeled.ttf', 20)
 
 # Carrega imagem de blocos
-block_img = pygame.image.load('imagens/bloco.png').convert_alpha()
+block_img = pygame.image.load('imagens/brigadeiro0.png').convert_alpha()
 
 # Carrega imagem blocos 2
 cake_img = pygame.image.load('imagens/bloco_cake.png').convert_alpha()
@@ -174,7 +174,7 @@ class Vanellope(pygame.sprite.Sprite):
         if self.speedy < 0:
             collisions = pygame.sprite.spritecollide(self, self.block_sprites, False, pygame.sprite.collide_mask)
             for collision in collisions:
-                print(self.rect.y, collision.rect.bottom)
+                #print(self.rect.y, collision.rect.bottom)
                 self.colidiu_block = True
 
         # Se colidiu com algum bloco, volta para o ponto antes da colisão

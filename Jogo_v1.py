@@ -256,6 +256,7 @@ def tela1(surf):
                     sys.exit() #sair pela rotina do sistema 
                 if evento.type == pygame.KEYDOWN:
                     keys_down1[evento.key] = True
+                    coke1.cokes_number -= 1
                     if evento.key == pygame.K_LEFT:
                         jogador.speedx -= 8
                     if evento.key == pygame.K_RIGHT:
@@ -324,7 +325,7 @@ def tela1(surf):
                 all_sprites.add(r)
                 all_guardas.add(r)
 
-            colisao = pygame.sprite.spritecollide(jogador, all_guardas, True)
+            colisao = pygame.sprite.spritecollide(jogador, all_guardas, True, pygame.sprite.collide_mask)
             if colisao:
                 keys_down1 = {}
                 return
