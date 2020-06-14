@@ -5,7 +5,6 @@ import sys
 import pygame
 import random
 #from Jogo_v2 import tela2
-
 def main():
     """Rotina principal do jogo"""
 
