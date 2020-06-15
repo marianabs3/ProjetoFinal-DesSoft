@@ -16,6 +16,9 @@ Running Mode               |  Race Mode
 :-------------------------:|:-------------------------:
 ![](imagens/modo1.png)   |  ![](imagens/modo2.png)
 
+## Starting
+
+Execute 'principal.py'. 
 
  ## Referências
 
