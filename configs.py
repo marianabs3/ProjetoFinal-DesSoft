@@ -44,11 +44,6 @@ BRIGADEIRO_HEIGHT = 100
 INITIAL_BLOCKS = 1
 CAKE_BLOCKS = 8
 
-# Estabelece a pasta que contem as figuras e sons.
-IMAGENS_DIR = path.join(path.dirname(__file__), 'assets', 'imagens')
-SONS_DIR = path.join(path.dirname(__file__), 'assets', 'sons')
-FONTES_DIR = path.join(path.dirname(__file__), 'assets', 'fontes')
-
 FPS = 120
 
 BLACK = (0, 0, 0)
@@ -66,3 +61,4 @@ COKE_HEIGHT = 50
 
 TIRO_WIDTH = 57
 TIRO_HEIGHT = 14
+

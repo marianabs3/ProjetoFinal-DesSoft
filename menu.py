@@ -14,10 +14,10 @@ eng_img = pygame.image.load('imagens/GameOver.png')
 
 def MenuInicial(window):
 
-    casa = True
+    marcador = True
 
     # ===== Loop principal =====
-    while casa:
+    while marcador:
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(menu_img, (0,0))
@@ -49,10 +49,10 @@ def MenuInicial(window):
 
 def MenuInicial2(window):
 
-    bola = True
+    marcador1 = True
 
     # ===== Loop principal =====
-    while bola:
+    while marcador1:
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(menu_img1, (0,0))
@@ -81,9 +81,9 @@ def MenuInicial2(window):
 
 def MenuInicial3(window):
 
-    amor = True
+    marcador2 = True
     # ===== Loop principal =====
-    while amor:
+    while marcador2:
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(menu_img2, (0,0))
@@ -111,9 +111,9 @@ def MenuInicial3(window):
 
 def end_screen(window, pontuacao):
 
-    dado = True
+    marcador3 = True
     # ===== Loop principal =====
-    while dado:
+    while marcador3:
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(eng_img, (0,0))

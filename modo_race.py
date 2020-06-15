@@ -48,7 +48,7 @@ def tela1(surf, pontuacao):
 
     # Carrega música de fundo
     pygame.mixer.music.load('sons/fight_looped.wav')
-    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play(-1)
 
     # Carrega som do tiro
@@ -158,7 +158,7 @@ def tela1(surf, pontuacao):
 
             colisao = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
             
-            # Se colidiu com o bloco, cria novas cocas
+            # Se colidiu com o bloco, mata a coca e cria uma nova
             if colisao:
                 self.kill()
                 new_coke = Coke(cake_sprites, coke)
@@ -189,7 +189,7 @@ def tela1(surf, pontuacao):
             self.current_image = 0
             
             # Velocidades
-            self.speedx = -2
+            self.speedx = -8
             self.speedy = 0
 
             self.image = rosquinha0
@@ -430,6 +430,7 @@ def tela1(surf, pontuacao):
 
             # Se não possui mais cocas, jogador volta a outra fase
             if coke1.cokes_number == 0:
+                keys_down1 = {}
                 return pontuacao
                 
                 # Carrega novamente som principal do jogo
