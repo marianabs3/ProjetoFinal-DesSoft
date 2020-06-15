@@ -126,13 +126,13 @@ def end_screen(window):
             if event.type == pygame.KEYDOWN:
             
             # Dependendo da tecla, altera a velocidade.
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_DOWN:
                     dado = False
                     return QUIT
             # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 
-                if event.key == pygame.K_p:
+                if event.key == pygame.K_DOWN:
                     dado = False
                     return QUIT
 

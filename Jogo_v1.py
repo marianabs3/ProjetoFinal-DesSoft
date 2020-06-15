@@ -88,6 +88,7 @@ def tela1(surf, pontuacao):
             self.speedx = 0
 
         def update(self):
+            #print(self.speedx)
             self.rect.x += self.speedx
 
 
@@ -283,11 +284,11 @@ def tela1(surf, pontuacao):
                     all_guardas.add(new_rosquinha)
 
             
-            all_sprites.update()
 
             for cake in cake_sprites:
                 cake.speedx = -jogador.speedx
             
+            all_sprites.update()
             distance2 += jogador.speedx
 
             background_rect.x -= jogador.speedx
@@ -338,7 +339,7 @@ def tela1(surf, pontuacao):
             if colisao:
                 coke1.cokes_number += 1
                 som_colisao.play()
-                jogador.speedx += 0.05
+                #jogador.speedx += 0.05
             
             for i in range(len(colisao)):
                 c = Coke(coke)
