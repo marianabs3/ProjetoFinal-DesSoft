@@ -5,6 +5,7 @@ import pygame
 import os
 from pygame.locals import *
 import random
+ 
 from menu import MenuInicial, MenuInicial2, MenuInicial3
 from menu import end_screen
 from configs import INIT, INIT2, INIT3, GAME, END, QUIT

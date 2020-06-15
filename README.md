@@ -15,3 +15,4 @@ Running Mode               |  Race Mode
 ## ProjetoFinal-DesSoft
  Projeto final de DesSoft 2020.1
  Equipe: Eduardo Papandrea Santana, Ivan de Alcantara Barbosa Barros e Mariana Barbosa Sousa
+ Inspirado no Handout da aula 13, nas aulas de pygame do canal do professor Luciano Soares e nos arquivos de Snippets do professor Andrew Kurauchi.
