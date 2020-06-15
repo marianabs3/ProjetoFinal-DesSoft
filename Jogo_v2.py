@@ -5,15 +5,14 @@ import pygame
 import os
 from pygame.locals import *
 import random
-from menu import MenuInicial, MenuInicial2, MenuInicial3
-from menu import end_screen
-from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 from menu import *
 from configs import *
 from Jogo_v1 import tela1
 
+# Inicia programa
 pygame.init()
 
+# Carrega tela
 tela = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Fuga Doce")
 
@@ -63,16 +62,15 @@ lives_img = pygame.image.load('imagens/vida2.png').convert_alpha()
 lives_img = pygame.transform.scale(lives_img, (LIVES_WIDTH, LIVES_HEIGHT))
 lives_rect = lives_img.get_rect()
 
-#Música:
+# Sons utilizados nas dinâmicas
 rosquinha_morrendo = pygame.mixer.Sound('sons/rosquinha morrendo.ogg')
 vanellope_perdendo = pygame.mixer.Sound('sons/vanellope perdendo vida.ogg')
 vanellope_morte = pygame.mixer.Sound('sons/vanelope morte.ogg')
 
-
-
+# Classe que representa os blocos
 class Tile(pygame.sprite.Sprite):
-    # Construtor da classe.
     def __init__(self, tile_img, x, y):
+        
         # Construtor da classe pai (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
@@ -84,8 +82,8 @@ class Tile(pygame.sprite.Sprite):
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
 
+        # Mascára de colisão
         self.mask = pygame.mask.from_surface(self.image)
-
 
         # Posiciona o tile
         self.rect.x = x
@@ -119,9 +117,12 @@ class Vanellope(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH/2
         self.rect.bottom = int(HEIGHT * 7 / 8)
 
+        # Declara parâmetros necessários na função
         self.all_sprites = all_sprites
         self.block_sprites = block_sprites
         self.colidiu_block = False
+        
+        # Mascára de colisão
         self.mask = pygame.mask.from_surface(self.image)
 
     # Define o movimento de pular 
@@ -140,19 +141,19 @@ class Vanellope(pygame.sprite.Sprite):
         
         self.rect.y += self.speedy
         
+        # Verifica colisão com algum bloco
         if self.speedy < 0:
             collisions = pygame.sprite.spritecollide(self, self.block_sprites, False, pygame.sprite.collide_mask)
             for collision in collisions:
-                #print(self.rect.y, collision.rect.bottom)
                 self.colidiu_block = True
 
         # Se colidiu com algum bloco, volta para o ponto antes da colisão
         collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
+        
         # Corrige a posição do personagem para antes da colisão
         for collision in collisions:
             # Estava indo para baixo
             if self.speedy > 0:
-                #if self.rect.x + self.rect.width > collision.rect.x + 30:
                 self.rect.bottom = collision.rect.top
                 # Se colidiu com algo, para de cair
                 self.speedy = 0
@@ -166,18 +167,12 @@ class Vanellope(pygame.sprite.Sprite):
                 # Atualiza o estado para parado
                 self.state = STILL
 
+        # Atualiza posições após colisão
         self.rect.x += self.speedx
         collisions = pygame.sprite.spritecollide(self, self.all_sprites, False, pygame.sprite.collide_mask)
         self.rect.x -= self.speedx
     
-        # Corrige a posição do personagem para antes da colisão
-        # for collision in collisions:
-        #     # Estava indo para a direita
-        #     if self.speedx > 0:
-        #         self.rect.right = collision.rect.left
-        #     # Estava indo para a esquerda
-        #     elif self.speedx < 0:
-        #         self.rect.left = collision.rect.right
+        # Atualiza velocidades após colisão
         if len(collisions) > 0:
             self.real_speedx = 0
         else:
@@ -205,9 +200,10 @@ class Vanellope(pygame.sprite.Sprite):
         if self.speedy != 0:
             self.image = pygame.image.load('imagens/penelope_jump.png').convert_alpha()
         
+        # Mascára de colisão
         self.mask = pygame.mask.from_surface(self.image)
 
-    
+# Classe que representa os guardas rosquinhas
 class Guard(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -223,81 +219,65 @@ class Guard(pygame.sprite.Sprite):
 
         self.image = rosquinha0
 
+        # Redimensiona imagem
         self.rect = self.image.get_rect()
         self.rect[0] = WIDTH
         self.rect[1] = 270
+        
+        # Mascára de colisão
         self.mask = pygame.mask.from_surface(self.image)
 
 
     def update(self):
     
+        # Atualiza posição
         self.rect.x += self.speedx
-        #if self.rect.right > WIDTH:
-        #   self.rect.right = WIDTH
-        #  self.speedx = -2
-        #if self.rect.left < 0:   
-        #   self.rect.left = 0
-        #  self.speedx = 2
         
         #Percorre lista das imagens e cria animação
         self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
         self.image = self.images[ self.current_image ]
 
-        
-
-# all_candies = pygame.sprite.Group()
-# for i in range(5):
-#     candy = Candy(candy_img)
-#     all_candies.add(candy)
-
-# position_x = [WIDTH, 1200, 1300]
-
-# Carrega todos os assets de uma vez.
-"""
-def load_assets(img_dir):
-    assets = {}
-    assets[PLAYER_IMG] = pygame.image.load(path.join(img_dir, 'penelope_frente.png')).convert_alpha()
-    assets[PLAYER2_IMG] = pygame.image.load(path.join(img_dir, 'penelope_jump.png')).convert_alpha()
-    assets[PLAYER3_IMG] = pygame.image.load(path.join(img_dir, 'penelope_move0.png')).convert_alpha()
-    assets[PLAYER4_IMG] = pygame.image.load(path.join(img_dir, 'penelope_move1.png')).convert_alpha()
-    assets[PLAYER5_IMG] = pygame.image.load(path.join(img_dir, 'penelope_move2.png')).convert_alpha()
-    assets[BLOCK] = pygame.image.load(path.join(img_dir, 'bloco.png')).convert()
-    assets[CAKE] = pygame.image.load(path.join(img_dir, 'bloco_cake.png')).convert()
-    assets[GUARDA] = pygame.image.load(path.join(img_dir, 'rosquinha_move0.png')).convert()
-    assets[GUARDA1] = pygame.image.load(path.join(img_dir, 'rosquinha_move1.png')).convert()
-    assets[GUARDA2] = pygame.image.load(path.join(img_dir, 'rosquinha_move2.png')).convert()
-    return assets
-
-"""
-
+# Função da tela principal que rodará o jogo
 def game_screen(tela, pontuacao):
+    
     # Função de tempo de animação   
     clock = pygame.time.Clock()
 
-    # Cria grupo de sprites da personagem principal
-    blocks = pygame.sprite.Group() #blocos
+    # Grupo para os blocos
+    blocks = pygame.sprite.Group() 
 
-    #assets = load_assets(img_dir)
-    #van_group = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group() #vanellope
+    # Grupo para todas as sprites
+    all_sprites = pygame.sprite.Group()
+
+    # Grupo para os guardas
     all_guardas = pygame.sprite.Group()
-    #van_group.add(vanellope)
+    
+    # Grupo para os brigadeiros
     all_brigadeiro = pygame.sprite.Group()
-    block_sprites = pygame.sprite.Group() #bloco também
+
+    # Grupo 2 para os blocos
+    block_sprites = pygame.sprite.Group() 
+
+    # Grupo para os blocos de bolo
     cake_sprites = pygame.sprite.Group()
+
+    # Cria personagem
     vanellope = Vanellope(blocks, block_sprites)
     all_sprites.add(vanellope)
 
+    # Score inicial
     pontuacao = 0
 
+    # Cria guarda rosquinha
     rosquinha = Guard()
     all_sprites.add(rosquinha)
     all_guardas.add(rosquinha)
 
+    # Posição dos blocos de bolo
     position_y = [80]
     position2_y = [210]
 
-
+    # Cria blocos e brigadeiro
     for i in range(INITIAL_BLOCKS):
         block_x = random.randint(WIDTH, int(WIDTH * 1.5))
         block_y = random.choice(position_y)
@@ -308,6 +288,7 @@ def game_screen(tela, pontuacao):
         all_sprites.add(block)
         blocks.add(block)
         
+    # Cria blocos de bolo
     for i in range(CAKE_BLOCKS):
         cake_x = random.randint(800, WIDTH)
         cake_y = random.choice(position2_y)
@@ -316,12 +297,12 @@ def game_screen(tela, pontuacao):
         all_sprites.add(cake)
         blocks.add(cake)
 
+    # Carrega som principal do jogo
     pygame.mixer.music.load('sons/Christmas synths.ogg')
     pygame.mixer.music.set_volume(0.3)
     pygame.mixer.music.play(-1)
 
-
-    # Loop principal do jogo
+    # Parâmetros importantes 
     distance = 0
     create_distance = 100
     distance2 = 0
@@ -329,6 +310,8 @@ def game_screen(tela, pontuacao):
     game = True
     lives = 3
     keys_down = {}
+
+    # Loop principal do jogo
     while game:
         clock.tick(120)
         for event in pygame.event.get():
@@ -338,6 +321,7 @@ def game_screen(tela, pontuacao):
     
             if event.type == pygame.KEYDOWN:
                 keys_down[event.key] = True            
+            
             # Dependendo da tecla, altera a velocidade.
                 if event.key == pygame.K_LEFT:
                     vanellope.speedx -= 4
@@ -358,27 +342,29 @@ def game_screen(tela, pontuacao):
 
         all_sprites.update()
 
+        # Define velocidade dos blocos
         for block in block_sprites:
             block.speedx = -vanellope.real_speedx
 
+        # Define velocidade dos blocos de bolo
         for cake in cake_sprites:
             cake.speedx = -vanellope.real_speedx
         
+        # Atualiza posição dos blocos
         distance += vanellope.real_speedx
         distance2 += vanellope.real_speedx
 
         background_rect.x -= vanellope.real_speedx
-            # Se o fundo saiu da janela, faz ele voltar para dentro.
-            # Verifica se o fundo saiu para a esquerda
+            
+        # Verifica se o fundo saiu para a direita
         if background_rect.right < 0:
             background_rect.x += background_rect.width
-            # Verifica se o fundo saiu para a direita
+            
+        # Verifica se o fundo saiu para a esquerda
         if background_rect.left >= WIDTH:
             background_rect.x -= background_rect.width
 
         # Verifica se algum bloco saiu da janela
-        # for block in block_sprites:
-        #     if block.rect.right < 0:
         if distance > create_distance:
             create_distance = distance + 1000
             # Destrói o bloco e cria um novo no final da tela
@@ -389,8 +375,10 @@ def game_screen(tela, pontuacao):
             block_sprites.add(new_block)
             blocks.add(new_block)        
 
+        # Verifica se algum bloco de bolo saiu da janela
         if distance2 > create_distance2:
             create_distance2 = distance2 + 100
+            # Destrói o bloco e cria um novo no final da tela
             cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
             cake_y = random.choice(position2_y)
             new_cake = Tile(cake_img, cake_x, cake_y)
@@ -398,9 +386,10 @@ def game_screen(tela, pontuacao):
             cake_sprites.add(new_cake)
             blocks.add(new_cake)
 
+        # Verifica se algum guarda saiu da janela
         for rosquinha in all_guardas:
             if rosquinha.rect.right < 0:
-                # Destrói o bloco e cria um novo no final da tela
+                # Destrói guarda e cria um novo 
                 rosquinha.kill()
                 rosquinha_x = random.randint(WIDTH, int(WIDTH * 1.5))
                 rosquinha_y = 330
@@ -412,75 +401,87 @@ def game_screen(tela, pontuacao):
 
         tela.fill(BLACK) 
         
+        # Desenha e posiciona fundo
         tela.blit(background, background_rect)
         background_rect2 = background_rect.copy()
         
+        # Desenha fundo a direita e esquerda
         if background_rect.left > 0:
-                # Precisamos desenhar o fundo à esquerda
             background_rect2.x -= background_rect2.width
         else:
-                # Precisamos desenhar o fundo à direita
             background_rect2.x += background_rect2.width
         tela.blit(background, background_rect2)
 
+        # Dsenha todas sprites
         all_sprites.draw(tela)
 
         pygame.display.flip()
 
-        # Desenha personagem
-        # van_group.update()
-        # van_group.draw(tela)
-
-        # all_candies.update()
-        # all_candies.draw(tela)
-
         all_sprites.update()       
 
+        # Declara colisão da personagem principal com os guardas
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, False, pygame.sprite.collide_mask)
+        
+        # Verifica se personagem principal colidiu com bloco brigadeiro
         if vanellope.colidiu_block:
             vanellope.colidiu_block = False
-            #block.image = brigadeiro
             keys_down = {}
+            
+            # É direcionada a fase do carrinho
             pontuacao = tela1(tela, pontuacao)
+            
+            # Carrega música principal quando volta
             pygame.mixer.music.load('sons/Christmas synths.ogg')
             pygame.mixer.music.set_volume(0.3)
             pygame.mixer.music.play(-1)   
+            
             block.kill()
         
+        # Declara colisão dos guardas com a personagem principal
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
+        
         if colisao:
-            #keys_down = {}
+            
+            # Verifica se rosquinha foi atingida por cima
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
+                
+                # Toca som da rosquinha morrendo
                 rosquinha_morrendo.play()
+                
+                # Mata rosquinha e atualiza placar
                 colisao[0].kill()
                 pontuacao += 100
-            else:
-                #vanellope.image = imagem1
+           
+            else: 
+                # Toca som quando perde e atualiza vidas
                 vanellope_perdendo.play()
                 lives -= 1
             
+            # Cria novo guarda
             r = Guard()
             all_sprites.add(r)
             all_guardas.add(r)
 
+        # Se não tiver vidas, entra tela de game over
         if lives == 0:
             pygame.mixer.music.stop() 
             vanellope_morte.play()
             pygame.time.delay(2000)
             end_screen(tela, pontuacao)   
             
-    
+        # Desenha vidas
         for i in range(lives):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
 
+        # Desenha fonte do placar
         text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 2,  10)
         tela.blit(text_surface, text_rect)
         pygame.display.update()
 
-
+# Declara estados do menu
 state = INIT
 while state != QUIT:
     if state == INIT:
