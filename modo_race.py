@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+"""
+Fuga Doce - Sweet Escape
+Modo Race
+"""
 # Importa bibliotecas necessárias
 import os
 import sys
@@ -7,9 +10,10 @@ import pygame
 import random
 from configs import *
 
-# Função que reperesenta a fase do carrinho
 def tela1(surf, pontuacao):
-
+    """
+    Função que reperesenta a fase do carrinho
+    """
     # Carrega e dimensiona imagem de fundo
     background = pygame.image.load('imagens/fundo2.png').convert_alpha()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
@@ -63,8 +67,10 @@ def tela1(surf, pontuacao):
     # Carrega som da Vanellope perdendo vida
     vanellope_perdendo = pygame.mixer.Sound('sons/vanellope perdendo vida.ogg')
 
-    # Classe que define os blocos
     class Tile(pygame.sprite.Sprite):
+        """
+        Classe de todos os blocos 
+        """
         def __init__(self, tile_img, x, y):
            
            # Construtor da classe pai (Sprite).
@@ -90,8 +96,10 @@ def tela1(surf, pontuacao):
         def update(self, cake_sprites, all_sprites, all_cokes):
             self.rect.x += self.speedx
 
-    # Classe que define a personagem no carro
     class Carro(pygame.sprite.Sprite):
+        """
+        Classe da personagem no carro
+        """
         def __init__(self, img, all_sprites, all_arcoiris, tiro_imagem, som_tiro, cake_sprites):
             pygame.sprite.Sprite.__init__(self)
 
@@ -119,8 +127,10 @@ def tela1(surf, pontuacao):
             self.all_arcoiris.add(new_tiro)
             self.som_tiro.play()
 
-    # Classe que representa as cocas
     class Coke(pygame.sprite.Sprite):
+        """
+        Classe das cocas
+        """
         def __init__(self, cake_sprites, img):
             pygame.sprite.Sprite.__init__(self)
 
@@ -176,8 +186,10 @@ def tela1(surf, pontuacao):
                 self.cokes_time = now
                 self.cokes_number -= 1
 
-    # Classe que representa os guardas rosquinhas
     class Guard(pygame.sprite.Sprite):
+        """
+        Classe dos guardas rosquinha
+        """
         def __init__(self, img):
             pygame.sprite.Sprite.__init__(self)
     
@@ -210,8 +222,10 @@ def tela1(surf, pontuacao):
             self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
             self.image = self.images[ self.current_image ]
 
-    # Classe que representa o tiro
     class Arcoiris(pygame.sprite.Sprite):
+        """
+        Classe do tiro
+        """
         def __init__(self, img, left, centery):
             pygame.sprite.Sprite.__init__(self)
 
@@ -234,9 +248,10 @@ def tela1(surf, pontuacao):
             if self.rect.right > WIDTH:
                 self.kill()
     
-    # Função da tela principal que rodará o jogo
     def game2_screen(surf, pontuacao):
-        
+        """
+        Função da tela principal que rodará o jogo
+        """
         # Parâmetros que serão utilizados
         game = True
         rect = imagem.get_rect()    

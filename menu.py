@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+"""
+Fuga Doce - Sweet Escape
+Funçoes das telas de menu
+"""
 import pygame
 import os
 from pygame.locals import *
@@ -13,7 +16,9 @@ eng_img = pygame.image.load('imagens/GameOver.png')
 
 
 def MenuInicial(window):
-
+    """
+    Define tela de menu inicial
+    """
     marcador = True
 
     # ===== Loop principal =====
@@ -48,7 +53,9 @@ def MenuInicial(window):
         pygame.display.update()  # Mostra o novo frame para o jogador
 
 def MenuInicial2(window):
-
+    """
+    Define tela de menu de contexto da historia
+    """
     marcador1 = True
 
     # ===== Loop principal =====
@@ -80,7 +87,9 @@ def MenuInicial2(window):
         pygame.display.update()  # Mostra o novo frame para o jogador
 
 def MenuInicial3(window):
-
+    """
+    Define tela de menu de instruções
+    """
     marcador2 = True
     # ===== Loop principal =====
     while marcador2:
@@ -110,7 +119,9 @@ def MenuInicial3(window):
         pygame.display.update()  # Mostra o novo frame para o jogador
 
 def end_screen(window, pontuacao):
-
+    """
+    Define tela do game over
+    """
     marcador3 = True
     # ===== Loop principal =====
     while marcador3:

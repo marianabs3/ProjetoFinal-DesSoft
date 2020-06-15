@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+ Projeto final de DesSoft 2020.1
+ Equipe: Eduardo Papandrea Santana, Ivan de Alcantara Barbosa Barros e Mariana Barbosa Sousa
+ Fuga Doce - Sweet Escape
+"""
 
 #Importando as bibliotecas necessárias:
 import pygame
@@ -67,8 +72,10 @@ rosquinha_morrendo = pygame.mixer.Sound('sons/rosquinha morrendo.ogg')
 vanellope_perdendo = pygame.mixer.Sound('sons/vanellope perdendo vida.ogg')
 vanellope_morte = pygame.mixer.Sound('sons/vanelope morte.ogg')
 
-# Classe que representa os blocos
 class Tile(pygame.sprite.Sprite):
+    """
+    Classe de todos os blocos 
+    """
     def __init__(self, tile_img, x, y):
         
         # Construtor da classe pai (Sprite).
@@ -94,8 +101,10 @@ class Tile(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
 
-# Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
+    """
+    Classe da personagem principal
+    """
     def __init__(self, all_sprites, block_sprites):
         pygame.sprite.Sprite.__init__(self)
         
@@ -203,8 +212,10 @@ class Vanellope(pygame.sprite.Sprite):
         # Mascára de colisão
         self.mask = pygame.mask.from_surface(self.image)
 
-# Classe que representa os guardas rosquinhas
 class Guard(pygame.sprite.Sprite):
+    """
+    Classe dos guardas rosquinhas
+    """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
     
@@ -237,9 +248,11 @@ class Guard(pygame.sprite.Sprite):
         self.current_image = (self.current_image + 1) % 3  # Volta para imagem 0 da lista
         self.image = self.images[ self.current_image ]
 
-# Função da tela principal que rodará o jogo
+
 def game_screen(tela, pontuacao):
-    
+    """
+    Função da tela principal que rodará o jogo
+    """
     # Função de tempo de animação   
     clock = pygame.time.Clock()
 

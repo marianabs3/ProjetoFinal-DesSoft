@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Fuga Doce - Sweet Escape
+Constantes e definições importantes
+"""
 from os import path
 
 pontuacao = 0
