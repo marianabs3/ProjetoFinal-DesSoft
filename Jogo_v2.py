@@ -145,12 +145,12 @@ class Vanellope(pygame.sprite.Sprite):
         for collision in collisions:
             # Estava indo para baixo
             if self.speedy > 0:
-                if self.rect.x + self.rect.width > collision.rect.x + 30:
-                    self.rect.bottom = collision.rect.top
-                    # Se colidiu com algo, para de cair
-                    self.speedy = 0
-                    # Atualiza o estado para parado
-                    self.state = STILL
+                #if self.rect.x + self.rect.width > collision.rect.x + 30:
+                self.rect.bottom = collision.rect.top
+                # Se colidiu com algo, para de cair
+                self.speedy = 0
+                # Atualiza o estado para parado
+                self.state = STILL
             # Estava indo para cima
             elif self.speedy < 0:
                 self.rect.top = collision.rect.bottom
@@ -197,6 +197,8 @@ class Vanellope(pygame.sprite.Sprite):
         # Atualiza imagem quando personagem está pulando
         if self.speedy != 0:
             self.image = pygame.image.load('imagens/penelope_jump.png').convert_alpha()
+        
+        self.mask = pygame.mask.from_surface(self.image)
 
     
 class Guard(pygame.sprite.Sprite):
@@ -461,7 +463,7 @@ def game_screen(tela, pontuacao):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
 
-        text_surface = font.render("{:08d}".format(pontuacao, True, (255, 0, 0))
+        text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 2,  10)
         tela.blit(text_surface, text_rect)

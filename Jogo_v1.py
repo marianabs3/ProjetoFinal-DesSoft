@@ -208,7 +208,7 @@ def tela1(surf, pontuacao):
             if self.rect.right > WIDTH:
                 self.kill()
     
-    def game2_screen(surf):
+    def game2_screen(surf, pontuacao):
         game = True
         rect = imagem.get_rect()    
         delta_movimento = {"esquerda":0, "direita":0}
@@ -247,7 +247,6 @@ def tela1(surf, pontuacao):
         
         distance2 = 0
         create_distance2 = 100
-        pontouacao = 0
         keys_down1 = {}
       
         while game:
@@ -332,7 +331,7 @@ def tela1(surf, pontuacao):
                 keys_down1 = {}
                 return pontuacao
                 pygame.mixer.music.load('sons/fight_looped.wav')
-                pygame.mixer.music.set_volume(0.1)
+                pygame.mixer.music.set_volume(0.3)
                 pygame.mixer.music.play(-1)
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
@@ -357,10 +356,8 @@ def tela1(surf, pontuacao):
             if coke1.cokes_number == 0:
                 return pontuacao
                 pygame.mixer.music.load('sons/fight_looped.wav')
-                pygame.mixer.music.set_volume(0.1)
+                pygame.mixer.music.set_volume(0.3)
                 pygame.mixer.music.play(-1)
-
-
             text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
             text_rect = text_surface.get_rect()
             text_rect.midtop = (WIDTH / 2,  10)
@@ -375,7 +372,7 @@ def tela1(surf, pontuacao):
 #     pygame.display.flip() #faz atualização da tela
 
 #     try:
-    game2_screen(surf)
+    return game2_screen(surf, pontuacao)
 #     finally:
 #         pygame.quit()
  #if __name__ == "__main__":
