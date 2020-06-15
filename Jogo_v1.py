@@ -5,9 +5,10 @@ import sys
 import pygame
 import random
 from menu import pontinhos
-
+from configs import *
+"""
 def main():
-    """Rotina principal do jogo"""
+   
 
     pygame.init() #incia rotinas do pygame
 
@@ -16,7 +17,7 @@ def main():
     surf = pygame.display.set_mode((WIDTH, HEIGHT)) #crio superficie para jogo
     pygame.display.set_caption("Fuga Doce - Eduardo, Ivan, Mariana")
     tela1(surf)
-
+"""
 def tela1(surf):
     WIDTH = 1100
     HEIGHT = 500
@@ -54,6 +55,9 @@ def tela1(surf):
     rosquinha2 = pygame.transform.scale(rosquinha2, (GUARDA_WIDTH, GUARDA_HEIGHT))
 
     tiro_imagem = pygame.image.load('imagens/tiro.png').convert_alpha()
+    tiro_imagem = pygame.transform.scale(tiro_imagem, (TIRO_WIDTH, TIRO_HEIGHT))
+
+
     #Música:
     pygame.mixer.music.load('sons/fight_looped.wav')
     pygame.mixer.music.set_volume(0.1)

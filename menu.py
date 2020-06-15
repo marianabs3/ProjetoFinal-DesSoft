@@ -117,7 +117,7 @@ def end_screen(window):
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(eng_img, (0,0))
-
+        
         for event in pygame.event.get():
             # ----- Verifica consequências
             if event.type == pygame.QUIT:

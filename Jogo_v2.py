@@ -449,6 +449,7 @@ def game_screen(tela):
 
         if lives == 0:
             pygame.mixer.music.stop() 
+            pygame.time.delay(2000)
             end_screen(tela)   
             
     
