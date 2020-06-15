@@ -87,7 +87,7 @@ def tela1(surf, pontuacao):
 
             self.speedx = 0
 
-        def update(self):
+        def update(self, cake_sprites, all_sprites, all_cokes):
             #print(self.speedx)
             self.rect.x += self.speedx
 
@@ -123,7 +123,7 @@ def tela1(surf, pontuacao):
             self.som_tiro.play()
 
     class Coke(pygame.sprite.Sprite):
-        def __init__(self, img):
+        def __init__(self, cake_sprites, img):
             pygame.sprite.Sprite.__init__(self)
 
             self.image = img
@@ -133,15 +133,26 @@ def tela1(surf, pontuacao):
             self.speedx = 3
             self.speedy = 4
             self.cokes_number = 3
+            self.cake_sprites = cake_sprites
             self.cokes_time = pygame.time.get_ticks()
        
-        def update(self):
-
+        def update(self, cake_sprites, all_sprites, all_cokes):
+            self.cake_sprites = cake_sprites
+            self.all_sprites = all_sprites
+            self.all_cokes = all_cokes
             self.rect.x += self.speedx
             self.rect.y += self.speedy
             if self.rect.top > HEIGHT or self.rect.right + COKE_WIDTH < 0 or self.rect.left > WIDTH:
                 self.rect.x = random.randint(0, WIDTH - COKE_WIDTH)
                 self.rect.y = random.randint(-50, -COKE_HEIGHT)
+
+            colisao = pygame.sprite.spritecollide(self, self.cake_sprites, False, pygame.sprite.collide_mask)
+            if colisao:
+                self.kill()
+                new_coke = Coke(cake_sprites, coke)
+                all_sprites.add(new_coke)
+                all_cokes.add(new_coke)
+                
 
         def passatempo(self):
 
@@ -172,7 +183,7 @@ def tela1(surf, pontuacao):
             self.mask = pygame.mask.from_surface(self.image)
 
 
-        def update(self):
+        def update(self, cake_sprites, all_sprites, all_cokes):
     
             self.rect.x += self.speedx
             #if self.rect.right > WIDTH:
@@ -203,7 +214,7 @@ def tela1(surf, pontuacao):
             self.rect.left = left
             self.speedx = 10
         
-        def update (self):
+        def update (self, cake_sprites, all_sprites, all_cokes):
             self.rect.x += self.speedx
 
             if self.rect.right > WIDTH:
@@ -233,7 +244,7 @@ def tela1(surf, pontuacao):
             #all_guardas.add(guarda1)
         
         for i in range(3):
-            coke1 = Coke(coke)
+            coke1 = Coke(cake_sprites, coke)
             all_sprites.add(coke1)
             all_cokes.add(coke1)
 
@@ -288,7 +299,7 @@ def tela1(surf, pontuacao):
             for cake in cake_sprites:
                 cake.speedx = -jogador.speedx
             
-            all_sprites.update()
+            all_sprites.update(cake_sprites, all_sprites, all_cokes)
             distance2 += jogador.speedx
 
             background_rect.x -= jogador.speedx
@@ -341,12 +352,12 @@ def tela1(surf, pontuacao):
                 som_colisao.play()
                 #jogador.speedx += 0.05
             
+    
             for i in range(len(colisao)):
-                c = Coke(coke)
+                c = Coke(cake_sprites, coke)
                 all_sprites.add(c)
                 all_cokes.add(c)
                 c.passatempo()
-
 
             coke1.passatempo()
 
