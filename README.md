@@ -1,4 +1,4 @@
-## Fuga Doce - Sweet Escape
+# Fuga Doce - Sweet Escape
 
 This is a Super Mario style game that features Super Vanellope running and jumping through the amazing Candy World while the bad Donut guards try to stop her.
 
@@ -10,8 +10,8 @@ In the car the mode, the player can hit the space bar to fire the rainbow, destr
 
 Running Mode               |  Race Mode
 :-------------------------:|:-------------------------:
-![](imagens/mode1.png)   |  ![](imagens/mode2.png)
+![](imagens/modo1.png)   |  ![](imagens/modo2.png)
 
-# ProjetoFinal-DesSoft
+## ProjetoFinal-DesSoft
  Projeto final de DesSoft 2020.1
  Equipe: Eduardo Papandrea Santana, Ivan de Alcantara Barbosa Barros e Mariana Barbosa Sousa
