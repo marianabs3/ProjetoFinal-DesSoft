@@ -37,7 +37,7 @@ class Tile(pygame.sprite.Sprite):
 
 # Define classe da personagem principal
 class Vanellope(pygame.sprite.Sprite):
-    def __init__(self, all_sprites, groups, assets):
+    def __init__(self, groups, assets):
         pygame.sprite.Sprite.__init__(self)
         assets = load_assets()
         # Armazena imagens de movimento em uma lista
@@ -50,9 +50,9 @@ class Vanellope(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = 0
         self.real_speedx = 0
-        self.groups = groups
+        self.groups['all_sprites'] = all_sprites
         self.assets = assets
-        self.all_sprites = all_sprites
+        #self.all_sprites = all_sprites
 
 
         self.image = assets['imagem0']
@@ -247,3 +247,30 @@ class Arcoiris(pygame.sprite.Sprite):
 
         if self.rect.right > WIDTH:
             self.kill()
+
+assets = load_assets()
+# Cria grupo de sprites da personagem principal
+blocks = pygame.sprite.Group() #blocos
+#assets = load_assets(img_dir)
+van_group = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group() #vanellope
+all_guardas = pygame.sprite.Group()
+all_brigadeiro = pygame.sprite.Group()
+block_sprites = pygame.sprite.Group() #bloco também
+cake_sprites = pygame.sprite.Group()
+
+groups = {}
+groups['all_sprites'] = all_sprites
+groups['all_guards'] = all_guardas
+groups['all_brigadeiro'] = all_brigadeiro
+groups['block_sprites'] = block_sprites
+groups['cake_sprites'] = cake_sprites
+groups['blocks'] = blocks
+groups['van group'] = van_group
+
+vanellope = Vanellope(van_group, assets['imagem0'])
+all_sprites.add(vanellope)
+van_group.add(vanellope)
+rosquinha = Guard()
+all_sprites.add(rosquinha)
+all_guardas.add(rosquinha)

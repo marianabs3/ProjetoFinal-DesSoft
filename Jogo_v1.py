@@ -4,7 +4,6 @@ import os
 import sys
 import pygame
 import random
-from menu import pontinhos
 from configs import *
 """
 def main():
@@ -18,7 +17,7 @@ def main():
     pygame.display.set_caption("Fuga Doce - Eduardo, Ivan, Mariana")
     tela1(surf)
 """
-def tela1(surf):
+def tela1(surf, pontuacao):
     WIDTH = 1100
     HEIGHT = 500
     VANELLOPE_WIDTH = 100
@@ -209,7 +208,7 @@ def tela1(surf):
             if self.rect.right > WIDTH:
                 self.kill()
     
-    def game_screen(surf):
+    def game2_screen(surf):
         game = True
         rect = imagem.get_rect()    
         delta_movimento = {"esquerda":0, "direita":0}
@@ -248,7 +247,7 @@ def tela1(surf):
         
         distance2 = 0
         create_distance2 = 100
-        pontos1 = 0
+        pontouacao = 0
         keys_down1 = {}
       
         while game:
@@ -323,7 +322,7 @@ def tela1(surf):
 
             colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
             if colisao:
-                pontos1 += 200
+                pontuacao += 200
                 r = Guard(rosquinha0)
                 all_sprites.add(r)
                 all_guardas.add(r)
@@ -331,7 +330,10 @@ def tela1(surf):
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True, pygame.sprite.collide_mask)
             if colisao:
                 keys_down1 = {}
-                return
+                return pontuacao
+                pygame.mixer.music.load('sons/fight_looped.wav')
+                pygame.mixer.music.set_volume(0.1)
+                pygame.mixer.music.play(-1)
 
             colisao = pygame.sprite.spritecollide(jogador, all_cokes, True)
             if colisao:
@@ -353,9 +355,13 @@ def tela1(surf):
                 surf.blit(coke, coke_rect)
 
             if coke1.cokes_number == 0:
-                return
+                return pontuacao
+                pygame.mixer.music.load('sons/fight_looped.wav')
+                pygame.mixer.music.set_volume(0.1)
+                pygame.mixer.music.play(-1)
 
-            text_surface = font.render("{:08d}".format(pontinhos(pontos1)), True, (255, 0, 0))
+
+            text_surface = font.render("{:08d}".format(pontuacao), True, (255, 0, 0))
             text_rect = text_surface.get_rect()
             text_rect.midtop = (WIDTH / 2,  10)
             surf.blit(text_surface, text_rect)
@@ -369,7 +375,7 @@ def tela1(surf):
 #     pygame.display.flip() #faz atualização da tela
 
 #     try:
-    game_screen(surf)
+    game2_screen(surf)
 #     finally:
 #         pygame.quit()
  #if __name__ == "__main__":

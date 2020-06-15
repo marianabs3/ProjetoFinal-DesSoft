@@ -5,7 +5,7 @@ import pygame
 import os
 from pygame.locals import *
 import random
-from menu import MenuInicial, MenuInicial2, MenuInicial3, pontinhos
+from menu import MenuInicial, MenuInicial2, MenuInicial3
 from menu import end_screen
 from configs import INIT, INIT2, INIT3, GAME, END, QUIT
 from menu import *
@@ -261,7 +261,7 @@ def load_assets(img_dir):
 
 """
 
-def game_screen(tela):
+def game_screen(tela, pontuacao):
     # Função de tempo de animação   
     clock = pygame.time.Clock()
 
@@ -278,6 +278,8 @@ def game_screen(tela):
     cake_sprites = pygame.sprite.Group()
     vanellope = Vanellope(blocks, block_sprites)
     all_sprites.add(vanellope)
+
+    pontuacao = 0
 
     rosquinha = Guard()
     all_sprites.add(rosquinha)
@@ -316,7 +318,6 @@ def game_screen(tela):
     create_distance2 = 100
     game = True
     lives = 3
-    pontos = 0
     keys_down = {}
     while game:
         clock.tick(120)
@@ -430,7 +431,10 @@ def game_screen(tela):
             vanellope.colidiu_block = False
             #block.image = brigadeiro
             keys_down = {}
-            tela1(tela)   
+            pontuacao = tela1(tela, pontuacao)
+            pygame.mixer.music.load('sons/Christmas synths.ogg')
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play(-1)   
             block.kill()
         
         colisao = pygame.sprite.spritecollide(vanellope, all_guardas, True, pygame.sprite.collide_mask)
@@ -438,7 +442,7 @@ def game_screen(tela):
             #keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
                 colisao[0].kill()
-                pontos += 100
+                pontuacao += 100
             else:
                 #vanellope.image = imagem1
                 lives -= 1
@@ -457,7 +461,7 @@ def game_screen(tela):
             lives_rect.bottomleft = (10 + i*(LIVES_WIDTH-20), HEIGHT - 10)
             tela.blit(lives_img, lives_rect)
 
-        text_surface = font.render("{:08d}".format(pontinhos(pontos)), True, (255, 0, 0))
+        text_surface = font.render("{:08d}".format(pontuacao, True, (255, 0, 0))
         text_rect = text_surface.get_rect()
         text_rect.midtop = (WIDTH / 2,  10)
         tela.blit(text_surface, text_rect)
@@ -473,7 +477,7 @@ while state != QUIT:
     elif state == INIT3:
         state = MenuInicial3(tela)
     elif state == GAME:
-        state = game_screen(tela)
+        state = game_screen(tela, pontuacao)
     elif state == END:
         state = end_screen(tela)
     else:

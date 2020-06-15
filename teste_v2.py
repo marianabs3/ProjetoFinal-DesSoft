@@ -15,33 +15,8 @@ def game_screen(tela):
     clock = pygame.time.Clock()
 
     assets = load_assets()
-    background_rect = assets['background'].get_rect()
+    background_rect = assets[BACKGROUND].get_rect()
     lives_rect = assets['lives_img'].get_rect()
-
-    # Cria grupo de sprites da personagem principal
-    blocks = pygame.sprite.Group() #blocos
-    #assets = load_assets(img_dir)
-    van_group = pygame.sprite.Group()
-    all_sprites = pygame.sprite.Group() #vanellope
-    all_guardas = pygame.sprite.Group()
-    #van_group.add(vanellope)
-    all_brigadeiro = pygame.sprite.Group()
-    block_sprites = pygame.sprite.Group() #bloco também
-    cake_sprites = pygame.sprite.Group()
-
-    groups = {}
-    groups['all_sprites'] = all_sprites
-    groups['all_guards'] = all_guardas
-    groups['all_brigadeiro'] = all_brigadeiro
-    groups['block_sprites'] = block_sprites
-    groups['cake_sprites'] = cake_sprites
-    groups['blocks'] = blocks
-
-    vanellope = Vanellope(all_sprites, van_group, assets['imagem0'])
-    #all_sprites.add(vanellope)
-    rosquinha = Guard()
-    #all_sprites.add(rosquinha)
-    #all_guardas.add(rosquinha)
 
     position_y = [80]
     position2_y = [210]
@@ -161,7 +136,7 @@ def game_screen(tela):
 
         tela.fill(BLACK) 
         
-        tela.blit(assets['background'], background_rect)
+        tela.blit(assets[BACKGROUND], background_rect)
         background_rect2 = background_rect.copy()
         
         if background_rect.left > 0:
@@ -170,15 +145,15 @@ def game_screen(tela):
         else:
                 # Precisamos desenhar o fundo à direita
             background_rect2.x += background_rect2.width
-        tela.blit(assets['background'], background_rect2)
+        tela.blit(assets[BACKGROUND], background_rect2)
 
         all_sprites.draw(tela)
 
         pygame.display.flip()
 
         # Desenha personagem
-        # van_group.update()
-        # van_group.draw(tela)
+        #van_group.update()
+        #van_group.draw(tela)
 
         # all_candies.update()
         # all_candies.draw(tela)

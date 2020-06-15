@@ -138,8 +138,3 @@ def end_screen(window):
 
         # ----- Atualiza estado do jogo
         pygame.display.update()  # Mostra o novo frame para o jogador
-
-def pontinhos(valor):
-    pontuacao = 0
-    pontuacao += valor
-    return pontuacao

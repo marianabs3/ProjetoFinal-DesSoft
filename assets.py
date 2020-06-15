@@ -2,7 +2,6 @@ import pygame
 import os
 from configs import *
 
-
 BACKGROUND = 'background'
 FONT = 'font'
 BLOCK_IMG = 'block_img'
@@ -25,7 +24,6 @@ CARRO = 'carro'
 def load_assets():
     assets = {}
     assets[BACKGROUND] = pygame.image.load(os.path.join(IMAGENS_DIR, 'fundo2.png')).convert()
-    assets[BACKGROUND] = pygame.transform.scale(assets['background'], (WIDTH, HEIGHT))
     assets[BRIGADEIRO] = pygame.image.load(os.path.join(IMAGENS_DIR, 'brigadeiro0.png')).convert_alpha()
     assets[BRIGADEIRO] = pygame.transform.scale(assets['brigadeiro0'], (BRIGADEIRO_WIDTH, BRIGADEIRO_HEIGHT))
     assets[BLOCK_IMG] = pygame.image.load(os.path.join(IMAGENS_DIR, 'bloco.png')).convert_alpha()
