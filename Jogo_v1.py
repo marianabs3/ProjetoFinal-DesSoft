@@ -63,6 +63,8 @@ def tela1(surf, pontuacao):
     pygame.mixer.music.play(-1)
     som_tiro = pygame.mixer.Sound('sons/tiro.ogg')
     som_colisao = pygame.mixer.Sound('sons/Record.ogg')
+    rosquinha_morrendo = pygame.mixer.Sound('sons/rosquinha morrendo.ogg')
+    vanellope_perdendo = pygame.mixer.Sound('sons/vanellope perdendo vida.ogg')
 
     class Tile(pygame.sprite.Sprite):
     # Construtor da classe.
@@ -333,6 +335,7 @@ def tela1(surf, pontuacao):
 
             colisao = pygame.sprite.groupcollide(all_arcoiris, all_guardas, True, True)
             if colisao:
+                rosquinha_morrendo.play()
                 pontuacao += 200
                 r = Guard(rosquinha0)
                 all_sprites.add(r)
@@ -341,6 +344,7 @@ def tela1(surf, pontuacao):
             colisao = pygame.sprite.spritecollide(jogador, all_guardas, True, pygame.sprite.collide_mask)
             if colisao:
                 keys_down1 = {}
+                vanellope_perdendo.play()
                 return pontuacao
                 pygame.mixer.music.load('sons/fight_looped.wav')
                 pygame.mixer.music.set_volume(0.3)
