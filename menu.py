@@ -3,7 +3,7 @@
 import pygame
 import os
 from pygame.locals import *
-from configs import INIT, INIT2, INIT3, GAME, END, QUIT
+from configs import *
 
 # Carregando imagens do Menu
 menu_img = pygame.image.load('imagens/Inicio1.png')
@@ -109,7 +109,7 @@ def MenuInicial3(window):
         # ----- Atualiza estado do jogo
         pygame.display.update()  # Mostra o novo frame para o jogador
 
-def end_screen(window):
+def end_screen(window, pontuacao):
 
     dado = True
     # ===== Loop principal =====
@@ -117,6 +117,11 @@ def end_screen(window):
         # ----- Trata eventos
         clock = pygame.time.Clock()
         window.blit(eng_img, (0,0))
+        font = pygame.font.Font('fontes/Stabillo Medium.ttf', 30)
+        text_window = font.render("Sua pontuação foi: {:08d}".format(pontuacao), True, (255, 0, 0))
+        text_rect = text_window.get_rect()
+        text_rect.midtop = (WIDTH / 2,  10)
+        window.blit(text_window, text_rect)
         
         for event in pygame.event.get():
             # ----- Verifica consequências

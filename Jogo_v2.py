@@ -63,6 +63,13 @@ lives_img = pygame.image.load('imagens/vida2.png').convert_alpha()
 lives_img = pygame.transform.scale(lives_img, (LIVES_WIDTH, LIVES_HEIGHT))
 lives_rect = lives_img.get_rect()
 
+#Música:
+rosquinha_morrendo = pygame.mixer.Sound('sons/rosquinha morrendo.ogg')
+vanellope_perdendo = pygame.mixer.Sound('sons/vanellope perdendo vida.ogg')
+vanellope_morte = pygame.mixer.Sound('sons/vanelope morte.ogg')
+
+
+
 class Tile(pygame.sprite.Sprite):
     # Construtor da classe.
     def __init__(self, tile_img, x, y):
@@ -309,9 +316,10 @@ def game_screen(tela, pontuacao):
         all_sprites.add(cake)
         blocks.add(cake)
 
-        pygame.mixer.music.load('sons/Christmas synths.ogg')
-        pygame.mixer.music.set_volume(0.3)
-        pygame.mixer.music.play(-1)
+    pygame.mixer.music.load('sons/Christmas synths.ogg')
+    pygame.mixer.music.set_volume(0.3)
+    pygame.mixer.music.play(-1)
+
 
     # Loop principal do jogo
     distance = 0
@@ -443,10 +451,12 @@ def game_screen(tela, pontuacao):
         if colisao:
             #keys_down = {}
             if vanellope.rect.bottom <= colisao[0].rect.top + 100:
+                rosquinha_morrendo.play()
                 colisao[0].kill()
                 pontuacao += 100
             else:
                 #vanellope.image = imagem1
+                vanellope_perdendo.play()
                 lives -= 1
             
             r = Guard()
@@ -455,8 +465,9 @@ def game_screen(tela, pontuacao):
 
         if lives == 0:
             pygame.mixer.music.stop() 
+            vanellope_morte.play()
             pygame.time.delay(2000)
-            end_screen(tela)   
+            end_screen(tela, pontuacao)   
             
     
         for i in range(lives):
