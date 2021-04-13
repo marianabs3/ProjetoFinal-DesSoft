@@ -140,6 +140,11 @@ class Vanellope(pygame.sprite.Sprite):
             self.speedy -= JUMP_SIZE
             self.state = JUMPING
 
+    def morrendo(self):        
+            pygame.mixer.music.stop() 
+            vanellope_morte.play()
+            pygame.time.delay(2000)
+
     # Carrega as informações
     def update(self):
         
@@ -317,9 +322,9 @@ def game_screen(tela, pontuacao):
 
     # Parâmetros importantes 
     distance = 0
-    create_distance = 100
+    create_distance = standard_distance
     distance2 = 0
-    create_distance2 = 100
+    create_distance2 = standard_distance
     game = True
     lives = 3
     keys_down = {}
@@ -379,7 +384,7 @@ def game_screen(tela, pontuacao):
 
         # Verifica se algum bloco saiu da janela
         if distance > create_distance:
-            create_distance = distance + 1000
+            create_distance = distance + standard_distance
             # Destrói o bloco e cria um novo no final da tela
             block_x = random.randint(WIDTH, int(WIDTH * 1.5))
             block_y = random.choice(position_y)
@@ -390,7 +395,7 @@ def game_screen(tela, pontuacao):
 
         # Verifica se algum bloco de bolo saiu da janela
         if distance2 > create_distance2:
-            create_distance2 = distance2 + 100
+            create_distance2 = distance2 + standard_distance
             # Destrói o bloco e cria um novo no final da tela
             cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
             cake_y = random.choice(position2_y)
@@ -456,7 +461,7 @@ def game_screen(tela, pontuacao):
         if colisao:
             
             # Verifica se rosquinha foi atingida por cima
-            if vanellope.rect.bottom <= colisao[0].rect.top + 100:
+            if vanellope.rect.bottom <= colisao[0].rect.top + standard_distance:
                 
                 # Toca som da rosquinha morrendo
                 rosquinha_morrendo.play()
@@ -477,10 +482,8 @@ def game_screen(tela, pontuacao):
 
         # Se não tiver vidas, entra tela de game over
         if lives == 0:
-            pygame.mixer.music.stop() 
-            vanellope_morte.play()
-            pygame.time.delay(2000)
-            end_screen(tela, pontuacao)   
+            vanellope.morrendo() 
+            end_screen(tela, pontuacao)  
             
         # Desenha vidas
         for i in range(lives):

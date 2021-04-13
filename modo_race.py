@@ -303,7 +303,7 @@ def tela1(surf, pontuacao):
         
         # Parâmetros
         distance2 = 0
-        create_distance2 = 100
+        create_distance2 = standard_distance
         keys_down1 = {}
       
         # Loop principal
@@ -369,7 +369,7 @@ def tela1(surf, pontuacao):
 
             # Verifica se algum bloco saiu da janela
             if distance2 > create_distance2:
-                create_distance2 = distance2 + 100
+                create_distance2 = distance2 + standard_distance
                 # Destrói o bloco e cria um novo no final da tela
                 cake_x = random.randint(WIDTH, int(WIDTH * 1.5))
                 cake_y = random.choice(position2_y)

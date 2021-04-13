@@ -66,3 +66,5 @@ COKE_HEIGHT = 50
 TIRO_WIDTH = 57
 TIRO_HEIGHT = 14
 
+#Distância padrão
+standard_distance = 100
